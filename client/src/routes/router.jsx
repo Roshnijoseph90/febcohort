@@ -13,7 +13,7 @@ import Logout from '../pages/user/Logout';
 import Search from '../pages/user/Search';
 import MoviesDetails from '../pages/user/MoviesDetails'
 import Showtimes from '../pages/user/Showtimes'
-import OwnerLayout from '../layout/ownerLayout';
+import OwnerLayout from '../layout/OwnerLayout';
 import AdminLayout from '../layout/AdminLayout';
 export const router = createBrowserRouter([
   {
