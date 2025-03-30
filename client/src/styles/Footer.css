@@ -1,0 +1,26 @@
+/* Ensures that the layout takes up the full height of the page */
+html, body, #root {
+    height: 100%;
+  }
+  
+  .ant-layout {
+    min-height: 100%;
+  }
+  
+  .ant-layout-footer {
+    background: #001529;
+    color: white;
+    padding: 20px 50px;
+  }
+  
+  .ant-layout-content {
+    padding: 20px;
+    flex: 1; /* This ensures content takes the remaining space */
+  }
+  
+  @media (max-width: 768px) {
+    .ant-layout-footer {
+      padding: 10px;
+    }
+  }
+  

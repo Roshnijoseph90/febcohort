@@ -1,0 +1,61 @@
+/* General header styles */
+.ant-layout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #001529;
+    padding: 0 20px;
+  }
+  
+  .ant-layout-header .logo h2 {
+    margin: 0;
+    color: white;
+    font-size: 24px;
+  }
+  
+  .ant-menu {
+    display: flex;
+    justify-content: flex-end;
+    flex: 3;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .ant-menu-item {
+    font-size: 16px;
+  }
+  
+  .ant-menu-item a {
+    color: white;
+  }
+  
+  .ant-menu-item a:hover {
+    color: #40a9ff; /* Light blue color on hover */
+  }
+  
+  .ant-avatar {
+    background-color: #87d068;
+  }
+  
+  .ant-btn-link {
+    color: white;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .ant-layout-header {
+      padding: 0 10px; /* Less padding on smaller screens */
+    }
+  
+    .ant-menu {
+      display: block;
+      width: 100%;
+    }
+  
+    .ant-menu-item {
+      width: 100%;
+      text-align: left;
+      padding: 10px 20px;
+    }
+  }
+  

@@ -1,0 +1,115 @@
+/* General header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #fff; /* Light mode background */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s ease-in-out; /* Smooth transition for background color */
+  }
+  
+  /* Logo styles */
+  .header .logo {
+    flex: 1;
+  }
+  
+  .header .logo h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333; /* Default text color */
+  }
+  
+  /* Menu styles */
+  .ant-menu {
+    display: flex;
+    justify-content: flex-end;
+    flex: 3; /* Menu takes up 3 times more space than the logo */
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Individual menu item styles */
+  .ant-menu-item {
+    font-size: 16px;
+  }
+  
+  .ant-menu-item a {
+    color: #333;
+  }
+  
+  .ant-menu-item a:hover {
+    color: #1890ff; /* Blue color for hover effect */
+  }
+  
+  /* Dark mode styles */
+  body.dark-mode .header {
+    background-color: #333; /* Dark background */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Darker shadow for dark mode */
+  }
+  
+  body.dark-mode .header .logo h3 {
+    color: #fff; /* White logo text */
+  }
+  
+  body.dark-mode .ant-menu-item a {
+    color: #fff; /* White text for menu items in dark mode */
+  }
+  
+  body.dark-mode .ant-menu-item a:hover {
+    color: #40a9ff; /* Light blue on hover in dark mode */
+  }
+  
+  /* Dark Mode toggle button container */
+  .header .dark-mode-toggle {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .header {
+      padding: 0 10px; /* Less padding on smaller screens */
+    }
+  
+    .ant-menu {
+      display: none; /* Hide the menu on smaller screens by default */
+    }
+  
+    .header .menu-mobile {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      background-color: #fff;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      padding: 10px;
+    }
+  
+    /* Show the menu when the menu button is clicked (hamburger) */
+    .header.open .ant-menu {
+      display: block;
+    }
+  
+    .header .logo h3 {
+      font-size: 20px;
+    }
+  
+    .ant-menu-item {
+      font-size: 14px;
+    }
+  }
+  
+  /* Media query for mobile-specific styling */
+  @media (max-width: 480px) {
+    .header .logo h3 {
+      font-size: 18px; /* Smaller logo font on very small screens */
+    }
+  }
+  
