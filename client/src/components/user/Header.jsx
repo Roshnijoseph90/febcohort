@@ -3,7 +3,7 @@ import { Layout, Menu, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import DarkMode from '../../pages/Shared/DarkMode';
-import '../../styles/Header.css'
+
 // This is destructured from Ant Design
 const { Header: AntLayoutHeader } = Layout;
 
