@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Row, Col, Typography, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import { HomeOutlined } from '@ant-design/icons'; // Import the Home icon
-
+import '../../styles/Footer.css'
 const { Text } = Typography;
 
 const Footer = () => {

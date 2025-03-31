@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Menu, Button, Avatar } from 'antd';
 import { Link } from 'react-router-dom'; 
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons'; 
-
+import '../../styles/userHeader.css'
 // Destructure Header from Ant Design's Layout
 const { Header: AntLayoutHeader } = Layout;
 
