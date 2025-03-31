@@ -2,7 +2,7 @@
 import bcrypt from 'bcryptjs';
 
 import { generateToken } from '../utils/token.js';
-import  {User}  from '../models/usermodel.js';
+import { User } from '../models/usersModel.js';
 import crypto from 'crypto'
 
 import mongoose from 'mongoose';  
