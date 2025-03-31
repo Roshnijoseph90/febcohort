@@ -2,7 +2,9 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/token.js';
 import {Admin} from '../models/adminModel.js'
 import crypto from 'crypto'
-import mongoose from 'mongoose';  
+import mongoose from 'mongoose'; 
+const NODE_ENV = process.env.NODE_ENV;
+
 
 export const adminsignup = async (req, res, next) => {
   try {
@@ -88,7 +90,8 @@ export const adminLogin= async (req, res, next) => {
     }
     //generate token
     const token = generateToken(adminExist._id,adminExist.role || "admin");
-    res.cookie("token", token)
+    res.cookie("token", token, 
+      { httpOnly: true, secure: false, sameSite: 'lax' });
 
     delete adminExist._doc.password
     

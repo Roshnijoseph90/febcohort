@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/token.js';
 import {Owner} from '../models/ownerModels.js'
 import mongoose from 'mongoose';  
+const NODE_ENV = process.env.NODE_ENV;
 
 export const ownersignup = async (req, res, next) => {
   try {
@@ -77,7 +78,8 @@ export const ownerLogin= async (req, res, next) => {
     //generate token
     const token = generateToken(ownerExist._id,ownerExist.role || "owner");
     //res.cookie("token", token)
-    res.cookie("token", token)
+    res.cookie("token", token, 
+      { httpOnly: true, secure: false, sameSite: 'lax' });
    delete ownerExist._doc.password
     
       res.json({ data: ownerExist, message: "login successful" })
