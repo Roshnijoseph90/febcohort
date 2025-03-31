@@ -2,7 +2,7 @@
 import express from 'express';
 import { Booking } from '../models/bookingModel.js';
 import { Show } from '../models/showsModel.js';
-import { User } from '../models/userModel.js';
+import { User } from '../models/usermodel.js';
 
 const router = express.Router();
 

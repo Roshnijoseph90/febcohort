@@ -1,5 +1,5 @@
 
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/token.js';
 import {Owner} from '../models/ownerModels.js'
 import mongoose from 'mongoose';  

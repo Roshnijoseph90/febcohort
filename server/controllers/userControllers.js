@@ -1,8 +1,9 @@
-import bcrypt from 'bcrypt';
-import { generateToken } from '../utils/token.js';
-import {User} from '../models/userModel.js'
-import crypto from 'crypto'
+// Correct import for bcryptjs
+import bcrypt from 'bcryptjs';
 
+import { generateToken } from '../utils/token.js';
+import { User } from '../models/usermodel.js';
+import crypto from 'crypto'
 
 import mongoose from 'mongoose';  
 export const usersignup = async (req, res, next) => {
