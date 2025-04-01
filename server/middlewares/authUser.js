@@ -7,9 +7,11 @@ export const authUser = (req,res,next)=>{
         if(!token){
             return res.status(401).json({message:"user not authorized"})
         }
+        console.log('JWT_SECRET_KEY:', process.env.JWT_SECRET_KEY);
          //decode token
         const  decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
         console.log(decodedToken,"=====decoded token")
+        
         if(!decodedToken){
             return res.status(401).json({message:"user not authorized"})
         }

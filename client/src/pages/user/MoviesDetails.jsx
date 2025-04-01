@@ -8,6 +8,9 @@ export const MoviesDetails = () => {
   const { id } = useParams(); 
   console.log(id,"===prams")
   const [moviesDetails,isLoading,error]=useFetch(`/movie/moviesDetails/${id}`)
+  const handleBookingClick = ()=>{
+    Navigate('/booking/${id}')
+  }
 
 return (
   <div style={{ padding: "20px" }}>
@@ -31,7 +34,7 @@ return (
         <p>{moviesDetails?.description}</p>
       </div>
 
-      <Button type="primary">Book Ticket</Button>
+      <Button type="primary" onClick={handleBookingClick}>Book Ticket</Button>
     </div>
   );
 };

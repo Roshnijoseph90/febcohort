@@ -60,7 +60,7 @@ export const router = createBrowserRouter([
             element: <Profile />,  // Profile Page
           },
           {
-            path: "booking/:movieId/:showtimeId",  // Fixed to be relative
+            path: "booking/:id",  // Fixed to be relative
             element: <Booking />,  // Book Ticket Page
           },
           {
