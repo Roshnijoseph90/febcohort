@@ -10,6 +10,7 @@ import {axiosInstance} from '../config/axiosInstance'
         const response = await axiosInstance({
           method: 'GET',
           url:url,
+          
         });
   
         // Set movie data

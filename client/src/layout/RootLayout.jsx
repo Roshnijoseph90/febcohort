@@ -10,7 +10,7 @@ import { saveuser, clearuser } from '../redux/features/userSlice';
 export const RootLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector((state) => state.user);
-  console.log(user, "==user");
+ // console.log(user, "==user");
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -19,6 +19,7 @@ export const RootLayout = () => {
       const response = await axiosInstance({
         method: "GET",
         url: "/user/checkuser",
+       
       });
 
       // If the user is authorized, save their data

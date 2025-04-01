@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/token.js';
 import { User } from '../models/usersModel.js';
 import crypto from 'crypto'
-const NODE_ENV = process.env.NODE_ENV;
+//const NODE_ENV = process.env.NODE_ENV;
 
 
 import mongoose from 'mongoose';  
@@ -65,6 +65,7 @@ export const usersignup = async (req, res, next) => {
 
 export const userLogin= async (req, res, next) => {
   try {
+    
     //collect userdata
     const {  email,password,confirmPassword} = req.body;
 
@@ -95,12 +96,13 @@ export const userLogin= async (req, res, next) => {
     }
     //generate token
     const token = generateToken(userExist._id, "user");
+    res.cookie("token",token)
     //store token
-    res.cookie("token", token,{
+    /*res.cookie("token", token,{
       sameSite:NODE_ENV === "production"?"None":"Lax",
      secure:  NODE_ENV  === "production",
      httpOnly:NODE_ENV ==="production",
-   });
+   });*/
    delete userExist._doc.password
     
       res.json({ data: userExist, message: "login successful" })
