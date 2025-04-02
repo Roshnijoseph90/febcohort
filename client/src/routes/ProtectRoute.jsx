@@ -11,7 +11,7 @@ const ProtectRoute = () => {
       // Redirect to login page if user is not authenticated
       navigate('/login');
     }
-  }, []);
+  }, [isUserAuth,navigate]);
 
   return (
     <div>
