@@ -7,7 +7,7 @@ export const authUser = (req,res,next)=>{
         if(!token){
             return res.status(401).json({message:"user not authorized"})
         }
-        console.log('JWT_SECRET_KEY:', process.env.JWT_SECRET_KEY);
+       
          //decode token
         const  decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
         console.log(decodedToken,"=====decoded token")
@@ -19,11 +19,21 @@ export const authUser = (req,res,next)=>{
        
      next()
 
-       
+    } catch (error) {
+        if (error instanceof jwt.JsonWebTokenError) {
+          return res.status(401).json({ message: "Invalid token" });
+        } else if (error instanceof jwt.TokenExpiredError) {
+          return res.status(401).json({ message: "Token expired" });
+        } else if (error instanceof jwt.NotBeforeError) {
+          return res.status(401).json({ message: "Token not active yet" });
+        }
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error" });
+      }
        
 
-    }catch (error) {
+    /*}catch (error) {
         res.status(error.statusCode || 500).json({ message: error.message || 'Internal server error' });
         console.log(error);
-      }
+      }*/
 }
