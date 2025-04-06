@@ -1,4 +1,4 @@
-import { ArrowsRightLeftIcon, ArrowsUpDownIcon, InformationCircleIcon, UserIcon } from '@heroicons/react/24/outline'
+/*import { ArrowsRightLeftIcon, ArrowsUpDownIcon, InformationCircleIcon, UserIcon } from '@heroicons/react/24/outline'
 import axios from 'axios'
 import {  useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -339,4 +339,25 @@ const Theater = ({ theaterId, movies, selectedDate, filterMovie, setSelectedDate
 		</div>
 	)
 }
-export default Theater
+export default Theater*/
+import React from 'react';
+
+const Theater = ({ showtimes, onSelectShowtime }) => {
+  return (
+    <div>
+      <h3>Select Showtime</h3>
+      <ul>
+        {showtimes.map((showtime) => (
+          <li key={showtime.showId}>
+            <button onClick={() => onSelectShowtime(showtime.showId)}>
+              {showtime.showTime} - {showtime.theaterName}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Theater;
+

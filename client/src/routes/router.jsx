@@ -14,6 +14,7 @@ import Search from '../pages/user/Search';
 import MoviesDetails from '../pages/user/MoviesDetails';
 import Showtimes from '../pages/user/Showtimes';
 import OwnerLayout from '../layout/OwnerLayout';
+
 import AdminLayout from '../layout/AdminLayout';
 
 export const router = createBrowserRouter([
@@ -99,7 +100,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "signup",
-        element: <SignUpPage role="owner"/>,
+        element: <SignUpPage />,
       },
       {
         path: "profile",

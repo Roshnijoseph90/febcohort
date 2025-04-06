@@ -2,7 +2,7 @@ import React from 'react'
 import MovieCard from '../../components/ui/MovieCard'
 import MovieCardSkeletons from '../../components/user/MovieCardSkeltons';
 import useFetch from '../../hooks/useFetch'
-
+import '../../styles/movies.css'
 const Movies = () => {
   const [getAllMovies,isLoading,error]= useFetch("/movie/getAllMovies")
   // While loading, show skeleton components

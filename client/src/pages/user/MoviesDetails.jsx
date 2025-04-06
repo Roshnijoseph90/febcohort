@@ -16,7 +16,7 @@ export const MoviesDetails = () => {
       const response = await axiosInstance({method:"POST",data:{movieId:moviesDetails?._id},url:"/booking/create-booking"})
       console.log(response)
       toast.success("book ticket sucessfully")
-
+      navigate(`/booking/${response.data.bookingId}`); 
     }catch(error){
       console.log(error)
       toast.error(error?.response?.data?.message || "unable to book ticket")

@@ -1,4 +1,4 @@
-import { CheckOutlined } from '@ant-design/icons';
+/*import { CheckOutlined } from '@ant-design/icons';
 
 import { memo, useState } from 'react'
 
@@ -40,4 +40,23 @@ const Seat = ({ seat, setSelectedSeats, selectable, isAvailable }) => {
 	)
 }
 
-export default memo(Seat)
+export default memo(Seat)*/
+import React from 'react';
+
+const Seat = ({ availableSeats, seatsBooked, setSeatsBooked }) => {
+  return (
+    <div>
+      <label>
+        Seats to Book:
+        <input
+          type="number"
+          value={seatsBooked}
+          onChange={(e) => setSeatsBooked(e.target.value)}
+          max={availableSeats}
+        />
+      </label>
+    </div>
+  );
+};
+
+export default Seat;

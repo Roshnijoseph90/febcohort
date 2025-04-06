@@ -1,0 +1,21 @@
+.movie-cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Create 3 equal-width columns */
+    gap: 20px; /* Space between the items */
+    padding: 20px;
+  }
+  
+  .movie-card {
+    /* Styles for individual movie cards */
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .movie-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
