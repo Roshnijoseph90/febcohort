@@ -3,7 +3,7 @@ import axios from 'axios';
 import Theater from '../../components/user/Theatre';
 import ShowtimeDetails from '../../components/user/ShowtimeDetails';
 import Seat from '../../components/user/Seat'
-import {Tickets} from '../../pages/user/Ticket'
+import Ticket from '../../pages/user/Ticket'
 import { loadStripe } from '@stripe/stripe-js';
 import { Button } from 'antd';
 
@@ -97,7 +97,7 @@ const BookingPage = ({ movieId, theaterId }) => {
             seatsBooked={seatsBooked} 
             setSeatsBooked={setSeatsBooked} 
           />
-          <Tickets
+          <Ticket
             ticketTypes={showtimeDetails.ticketTypes} 
             ticketType={ticketType} 
             setTicketType={setTicketType} 
