@@ -9,7 +9,7 @@ const Search = () => {
 
   useEffect(() => {
     if (query) {
-      // Mocked API call (replace this with an actual search API)
+      
       const mockResults = [
         { id: 1, title: 'Movie 1' },
         { id: 2, title: 'Movie 2' },

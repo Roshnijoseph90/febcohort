@@ -12,10 +12,10 @@ const DarkMode = ({ isDarkMode, toggleTheme }) => {
         position: 'absolute',
         top: '50%',
         right: '20px',
-        transform: 'translateY(-50%)', // Center the button vertically
-        padding: 0, // Remove padding to make the button icon-only
-        border: 'none', // Remove border for clean appearance
-        background: 'transparent', // Make background transparent
+        transform: 'translateY(-50%)', 
+        padding: 0, 
+        border: 'none', 
+        background: 'transparent', 
       }}
     />
   );

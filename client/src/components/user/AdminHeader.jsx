@@ -6,7 +6,7 @@ import '../../styles/userHeader.css'
 
 const { Header: AntLayoutHeader } = Layout;
 
-const UserHeader = () => {
+const AdminHeader = () => {
   return (
     <AntLayoutHeader style={{ background: '#001529', padding: '0 20px' }}>
       {/* Logo Section */}
@@ -32,26 +32,28 @@ const UserHeader = () => {
         <Menu.Item key="3">
           <Link to="/search">Search</Link>
         </Menu.Item>
-
+        <Menu.Item key="4">
+          <Link to="/addmovies">Add Movies</Link>
+        </Menu.Item>
         {/* Profile icon and logout button */}
-        <Menu.Item key="4" style={{ padding: '0 10px' }}>
+        <Menu.Item key="5" style={{ padding: '0 10px' }}>
           <Link to="/profile">
             {/* Avatar with user icon */}
             <Avatar icon={<UserOutlined />} style={{ backgroundColor: '#87d068' }} />
           </Link>
         </Menu.Item>
         <Menu.Item key="5" style={{ padding: '0 10px' }}>
-          {/* Wrap the Logout button in a Link */}
-          <Link to="/logout">
-            <Button type="link" style={{ color: 'white' }}>
-              <LogoutOutlined />
-              Logout
-            </Button>
-          </Link>
-        </Menu.Item>
+                  {/* Wrap the Logout button in a Link */}
+                  <Link to="/logout">
+                    <Button type="link" style={{ color: 'white' }}>
+                      <LogoutOutlined />
+                      Logout
+                    </Button>
+                  </Link>
+                </Menu.Item>
       </Menu>
     </AntLayoutHeader>
   );
 };
 
-export default UserHeader;
+export default AdminHeader;

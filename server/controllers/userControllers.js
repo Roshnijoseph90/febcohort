@@ -15,7 +15,7 @@ export const usersignup = async (req, res, next) => {
     // Collect user data
     const { name, email, mobile, location, profile_pic, password, confirmPassword } = req.body;
 
-    if (!name || !email || !mobile || !location || !profile_pic || !password || !confirmPassword) {
+    if (!name || !email || !mobile || !location || profile_pic, !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -36,7 +36,7 @@ export const usersignup = async (req, res, next) => {
     const hashedPassword =  bcrypt.hashSync(password, 10); // Changed to async version
 
     // Save to the database
-    const newUser = new User({ name, email, mobile, location, password: hashedPassword, profile_pic });
+    const newUser = new User({ name, email, mobile, location,profile_pic, password: hashedPassword, profile_pic });
     await newUser.save();
 
     // Generate token using ID and role

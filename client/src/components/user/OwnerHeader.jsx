@@ -3,10 +3,10 @@ import { Layout, Menu, Button, Avatar } from 'antd';
 import { Link } from 'react-router-dom'; 
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons'; 
 import '../../styles/userHeader.css'
-
+// Destructure Header from Ant Design's Layout
 const { Header: AntLayoutHeader } = Layout;
 
-const UserHeader = () => {
+const OwnerHeader = () => {
   return (
     <AntLayoutHeader style={{ background: '#001529', padding: '0 20px' }}>
       {/* Logo Section */}
@@ -41,17 +41,17 @@ const UserHeader = () => {
           </Link>
         </Menu.Item>
         <Menu.Item key="5" style={{ padding: '0 10px' }}>
-          {/* Wrap the Logout button in a Link */}
-          <Link to="/logout">
-            <Button type="link" style={{ color: 'white' }}>
-              <LogoutOutlined />
-              Logout
-            </Button>
-          </Link>
-        </Menu.Item>
+                  {/* Wrap the Logout button in a Link */}
+                  <Link to="/logout">
+                    <Button type="link" style={{ color: 'white' }}>
+                      <LogoutOutlined />
+                      Logout
+                    </Button>
+                  </Link>
+                </Menu.Item>
       </Menu>
     </AntLayoutHeader>
   );
 };
 
-export default UserHeader;
+export default OwnerHeader;

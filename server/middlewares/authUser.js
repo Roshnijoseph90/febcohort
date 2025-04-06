@@ -3,7 +3,7 @@ export const authUser = (req,res,next)=>{
     try{
         //collect token fron cookies
         const {token} = req.cookies;
-        console.log('Token in cookies:', token);  
+       
         if(!token){
             return res.status(401).json({message:"user not authorized"})
         }

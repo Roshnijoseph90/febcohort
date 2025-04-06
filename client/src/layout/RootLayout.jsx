@@ -21,20 +21,13 @@ export const RootLayout = () => {
         url: "/user/checkuser",
        
       });
-
-      // If the user is authorized, save their data
-      if (response.data.message === "user authorized") {
-        dispatch(saveuser(response.data.data));  
-      } else {
-        dispatch(clearuser());  // Clear user data if not authorized
-      }
-    } catch (error) {
+      console.log(response,"===checkuser response")
+     dispatch(saveuser())  
+     setIsLoading(false)
+    }catch(error) {
       console.log("Error:", error);
-      // Handle errors gracefully
       dispatch(clearuser());
-    } finally {
-      // Set loading to false after the check is completed
-      setIsLoading(false);
+      setIsLoading(false)
     }
   };
 

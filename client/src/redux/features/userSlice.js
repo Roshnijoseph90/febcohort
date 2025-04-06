@@ -17,7 +17,8 @@ export const userSlice = createSlice({
         state.isUserAuth=false;
         state.userData = {}
 
-    }
+    },
+    
   },
 })
 export const {saveuser,clearuser } = userSlice.actions

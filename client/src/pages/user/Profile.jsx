@@ -6,7 +6,7 @@ const Profile = () => {
   const [userProfile, isLoading, error] = useFetch("/user/profile");
   const [showOrders, setShowOrders] = useState(false);
 
-  // If data is successfully fetched, display the profile
+  
   return (
     <div>
       <div className='flex gap-8'>
@@ -20,7 +20,7 @@ const Profile = () => {
       <h5>Email ID:  {userProfile?.email}</h5>
       <h5>Location: {userProfile?.location}</h5>
       <h5>Mobile: {userProfile?.mobile}</h5>
-      <img src={userProfile?.profile_pic} alt="profile pic" />
+      
       
       {/* Show orders if state is true */}
       {showOrders && <p>This is your use orders</p>}

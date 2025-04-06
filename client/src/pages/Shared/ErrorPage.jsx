@@ -3,10 +3,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ErrorPage = ({ home }) => {
-  const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate(); 
 
-  const navigateToHome = home || '/'; // Use the provided 'home' prop or default to '/'
-
+  const navigateToHome = home || '/'; 
   return (
     <div>
       <h1>404 - Page Not Found!</h1>

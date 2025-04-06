@@ -1,11 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-
-
-
-
-const MovieCard = ({ movie }) => {
-  const navigate = useNavigate()
+const MovieCard = ({movie}) => {
+   const navigate = useNavigate()
   const { title, language, poster,_id } = movie;
  
   const handleClick = () => {
@@ -30,5 +26,6 @@ const MovieCard = ({ movie }) => {
   );
 };
 
-export default MovieCard;
 
+
+export default MovieCard

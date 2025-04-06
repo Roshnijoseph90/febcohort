@@ -1,0 +1,102 @@
+
+
+/* SignUpPage.css */
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+
+.card-body {
+  border: 2px solid #ddd; /* Border for the entire card */
+  border-radius: 10px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px;
+  background-color: white; /* Add white background to card */
+}
+
+.card-body h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.card-body .signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card-body .signup-form div {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.card-body input {
+  padding: 12px;
+  border: 1px solid #ddd; /* Border around input fields */
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  width: 100%; /* Ensures input takes full width */
+  transition: border-color 0.3s ease;
+}
+
+.card-body input:focus {
+  border-color: #0056b3; /* Blue border on focus */
+}
+
+.card-body p {
+  color: red;
+  font-size: 14px;
+}
+
+.card-body button {
+  padding: 12px;
+  background-color: #0056b3;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.card-body button:hover {
+  background-color: #00448d;
+}
+
+.card-body .links {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.card-body .links a {
+  color: #0056b3;
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+  display: block;  
+}
+
+.card-body .links a:hover {
+  text-decoration: underline;
+}
+
+.card-body .signup-error {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+}

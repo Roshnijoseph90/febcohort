@@ -1,7 +1,15 @@
+//sessionId
+//userId
+//showId or moviesId
+//payment status
+//booking status
+//priceDetails
+
+
 import mongoose from 'mongoose';
 
 // Define the schema for Booking
-const bookingSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -42,5 +50,5 @@ const bookingSchema = new mongoose.Schema({
 }, {
   timestamps: true,
 });
-export const Booking = mongoose.model('Booking', bookingSchema);
+export const Order = mongoose.model('Order', orderSchema);
   

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Skeleton, Card } from 'antd';
 
-const MovieCardSkeleton = () => {
+const MovieCardSkeletons = () => {
   return (
     <Card style={{ width: 240 }} cover={<Skeleton.Image />} >
       <Skeleton loading={true} active>
@@ -15,5 +15,5 @@ const MovieCardSkeleton = () => {
   );
 };
 
-export default MovieCardSkeleton;
+export default MovieCardSkeletons;
 

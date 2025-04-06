@@ -1,6 +1,6 @@
 import React from 'react'
-import MovieCard from '../../components/ui/MovieCards'
-import MovieCardSkeleton from '../../components/user/MovieCardSkeltons';
+import MovieCard from '../../components/ui/MovieCard'
+import MovieCardSkeletons from '../../components/user/MovieCardSkeltons';
 import useFetch from '../../hooks/useFetch'
 
 const Movies = () => {
@@ -13,7 +13,7 @@ const Movies = () => {
         {/* Display skeleton placeholders for the movie cards */}
         <div className="movie-cards-container">
           {[...Array(6)].map((_, index) => (
-            <MovieCardSkeleton key={index} /> // Display skeleton for 6 items
+            <MovieCardSkeletons key={index} /> // Display skeleton for 6 items
           ))}
         </div>
       </div>

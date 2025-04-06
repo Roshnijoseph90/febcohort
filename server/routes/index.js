@@ -8,6 +8,7 @@ import { theaterRouter } from './theaterRoutes.js'
 import { showRouter } from "./showsRoutes.js"
 import { bookingRouter } from "./bookingRoutes.js"
 import { ticketRouter } from "./ticketRoutes.js"
+import { paymentRouter } from "./paymentRoutes.js"
 const router = e.Router()
 router.use("/user",userRouter)
 router.use("/owner",ownerRouter)
@@ -18,6 +19,7 @@ router.use("/theater",theaterRouter)
 router.use("/shows",showRouter)
 router.use("/booking",bookingRouter)
 router.use("/ticket",ticketRouter)
+router.use("/payment",paymentRouter)
 
 
 export {router as apiRouter}

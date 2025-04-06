@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 import Home from '../pages/user/Home';
-import LoginPage from '../pages/Shared/LoginPage'
-import Signup from '../pages/Shared/SignUp';
-import Booking from '../pages/user/Booking';
+import LoginPage from '../pages/Shared/LoginPage';
+import SignUpPage from '../pages/Shared/SignUpPage';
+import BookingPage from '../pages/user/BookingPage';
 import Profile from '../pages/user/Profile';
 import ErrorPage from '../pages/Shared/ErrorPage';
 import ProtectRoute from './ProtectRoute';
@@ -11,10 +11,11 @@ import RootLayout from '../layout/RootLayout';
 import Movies from '../pages/user/Movies';
 import Logout from '../pages/user/Logout';
 import Search from '../pages/user/Search';
-import MoviesDetails from '../pages/user/MoviesDetails'
-import Showtimes from '../pages/user/Showtimes'
+import MoviesDetails from '../pages/user/MoviesDetails';
+import Showtimes from '../pages/user/Showtimes';
 import OwnerLayout from '../layout/OwnerLayout';
 import AdminLayout from '../layout/AdminLayout';
+
 export const router = createBrowserRouter([
   {
     path: "",
@@ -31,23 +32,23 @@ export const router = createBrowserRouter([
       },
       {
         path: "/logout",
-        element: <Logout />,  // Logout Page
+        element: <Logout role="user"/>,  // Logout Page
       },
       {
         path: "/signup",
-        element: <Signup />,  // Signup Page
+        element: <SignUpPage />,  // Signup Page
       },
-    {
+      {
         path: "movies",
         element: <Movies />,  // Movies Page
       },
       {
-        path:"/moviesDetails/:id",
-        element:<MoviesDetails/>
+        path: "/moviesDetails/:id",
+        element: <MoviesDetails />,
       },
       {
-        path:"/showtimes/:movieId",
-        element:<Showtimes/>
+        path: "/showtimes/:movieId",
+        element: <Showtimes />,
       },
       
       // Protecting Routes
@@ -61,12 +62,20 @@ export const router = createBrowserRouter([
           },
           {
             path: "booking/:id",  // Fixed to be relative
-            element: <Booking />,  // Book Ticket Page
+            element: <BookingPage />,  // Book Ticket Page
           },
           {
             path: "payment",
-            element: <h1>Payment Page</h1>,  // Payment Page (Placeholder)
+            element: <h1>Payment </h1>,  // Payment Page (Placeholder)
           },
+          {
+            path:"payment/sucess",
+            element:<h1>payment sucess</h1>
+          },
+          {
+            path:"payment/cancel",
+            element:<h1>payment sucess</h1>
+          }
         ],
       },
       
@@ -86,11 +95,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "login",
-        element: <LoginPage role="owner" />
+        element: <LoginPage role="owner" />,
       },
       {
         path: "signup",
-        element: <Signup />
+        element: <SignUpPage role="owner"/>,
       },
       {
         path: "profile",
@@ -100,7 +109,7 @@ export const router = createBrowserRouter([
         path: "logout",  // Corrected to relative path
         element: <Logout />,  // Logout Page
       },
-    ]
+    ],
   },
   {
     path: "admin",
@@ -108,11 +117,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "login",
-        element: <LoginPage role="admin" />
+        element: <LoginPage role="admin" />,
       },
       {
         path: "signup",
-        element: <Signup />
+        element: <SignUpPage role="admin"/>,
       },
       {
         path: "profile",
@@ -122,6 +131,6 @@ export const router = createBrowserRouter([
         path: "logout",  // Corrected to relative path
         element: <Logout />,  // Logout Page
       },
-    ]
-  }
+    ],
+  },
 ]);

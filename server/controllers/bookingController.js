@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { Booking } from '../models/bookingModel.js';
+import  {Booking} from '../models/bookingModel.js';
 import { Show } from '../models/showsModel.js';
 import { User } from '../models/usersModel.js';
 
@@ -43,22 +43,25 @@ export const createBooking = async (req, res) => {
 
     // Check if the user and show exist
     const user = await User.findById(userId);
-    const show = await Show.findById(showId);
-
-    if (!user || !show) {
-      return res.status(404).json({ message: 'User or Show not found' });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-
+    const show = await Show.findById(showId);
+   
+    
+    
     // Calculate the total amount for the booking and price per ticket
     const { pricePerTicket, totalAmount } = calculateBookingAmount(ticketType[0], isPremium, seatsBooked);
 
     const booking = new Booking({
       userId,
       showId,
+     
       seatsBooked,
       ticketType,
       isPremium,
       price: pricePerTicket, 
+      totalAmount, 
       bookingStatus: "confirmed"        
     });
 

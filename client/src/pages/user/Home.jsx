@@ -1,17 +1,9 @@
-import React from 'react';
-//import Footer from '../../components/user/Footer'
-
-//import Movies from './Movies'
-
+import React from 'react'
 
 const Home = () => {
   return (
     <div>
-     
-     <main>
-      <h5>Homepage</h5>
-     </main>
-    
+      
     </div>
   )
 }

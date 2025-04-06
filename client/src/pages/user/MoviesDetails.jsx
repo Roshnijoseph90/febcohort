@@ -2,14 +2,26 @@ import React, { useState, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import { Button } from "antd"; 
-
+import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from "../../config/axiosInstance";
+import toast from "react-hot-toast";
 export const MoviesDetails = () => {
   //const params = useParams();
   const { id } = useParams(); 
-  console.log(id,"===prams")
+  //console.log(id,"===prams")
   const [moviesDetails,isLoading,error]=useFetch(`/movie/moviesDetails/${id}`)
-  const handleBookingClick = ()=>{
-    Navigate('/booking/${id}')
+  //const navigate = useNavigate();
+  const handleBookingClick = async()=>{
+    try{
+      const response = await axiosInstance({method:"POST",data:{movieId:moviesDetails?._id},url:"/booking/create-booking"})
+      console.log(response)
+      toast.success("book ticket sucessfully")
+
+    }catch(error){
+      console.log(error)
+      toast.error(error?.response?.data?.message || "unable to book ticket")
+    }
+    
   }
 
 return (
