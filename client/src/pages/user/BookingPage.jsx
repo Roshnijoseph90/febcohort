@@ -80,7 +80,7 @@ const BookingPage = ({ movieId, theaterId }) => {
       <h1>Booking Page</h1>
 
       {/* Theater Selection */}
-      <TheaterSelection showtimes={showtimes} onSelectShowtime={setSelectedShowtime} />
+      <Theater showtimes={showtimes} onSelectShowtime={setSelectedShowtime} />
 
       {/* Showtime Details */}
       {showtimeDetails && (
