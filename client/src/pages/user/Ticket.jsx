@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Tickets = ({ ticketTypes, ticketType, setTicketType }) => {
+const Ticket = ({ ticketTypes, ticketType, setTicketType }) => {
   return (
     <div>
       <label>
@@ -17,4 +17,4 @@ const Tickets = ({ ticketTypes, ticketType, setTicketType }) => {
   );
 };
 
-export default Tickets;
+export default Ticket;
