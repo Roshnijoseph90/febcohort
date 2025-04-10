@@ -7,14 +7,32 @@ const bookingSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
- 
-  showId: {
+  movieId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Movie',
+    required: true,
+  },
+  
+ showId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Show',
     required: true,
   },
+  date:{
+    type:Date,
+    required:true,
+  },
+  theaterId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Theater',  // Referencing the Theater model
+    required: true,   // Ensure this field is required
+  },
   seatsBooked: {
     type: Number,
+    required: true,
+  },
+  seatNumbers: {
+    type: [String],  // Array of seat numbers (e.g., ['A1', 'A2'])
     required: true,
   },
   ticketType: {

@@ -12,7 +12,7 @@ const Showtimes = ({ selectedDate, filterMovie, showMovieDetail = true }) => {
       try {
         
         const response = await axios.get('/shows/get-all-shows');
-        
+        consol
        
         setShowtimes(response.data.showtimes);
         setMovies(response.data.movies);

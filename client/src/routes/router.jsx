@@ -3,8 +3,11 @@ import React from 'react';
 import Home from '../pages/user/Home';
 import LoginPage from '../pages/Shared/LoginPage';
 import SignUpPage from '../pages/Shared/SignUpPage';
-import BookingPage from '../pages/user/BookingPage';
+import Booking from '../pages/user/Booking';
+
 import Profile from '../pages/user/Profile';
+import ProfileAdmin from '../pages/admin/ProfileAdmin';
+import ProfileOwner from '../pages/owner/ProfileOwner';
 import ErrorPage from '../pages/Shared/ErrorPage';
 import ProtectRoute from './ProtectRoute';
 import RootLayout from '../layout/RootLayout';
@@ -13,7 +16,7 @@ import Logout from '../pages/user/Logout';
 import Search from '../pages/user/Search';
 import MoviesDetails from '../pages/user/MoviesDetails';
 import Showtimes from '../pages/user/Showtimes';
-import OwnerLayout from '../layout/OwnerLayout';
+import OwnerLayout from '../layout/ownerLayout';
 
 import AdminLayout from '../layout/AdminLayout';
 
@@ -63,7 +66,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "booking/:id",  // Fixed to be relative
-            element: <BookingPage />,  // Book Ticket Page
+            element: <Booking />,  // Book Ticket Page
           },
           {
             path: "payment",
@@ -104,7 +107,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: <ProfileOwner />,
       },
       {
         path: "logout",  // Corrected to relative path
@@ -126,7 +129,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: <ProfileAdmin />,
       },
       {
         path: "logout",  // Corrected to relative path

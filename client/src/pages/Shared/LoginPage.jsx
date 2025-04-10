@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';  // Import Link for naviga
 import { axiosInstance } from '../../config/axiosInstance';  // Make sure the path is correct
 import { useDispatch } from 'react-redux';
 import {clearuser,saveuser} from "../../redux/features/userSlice"
+import { Toaster,toast } from 'react-hot-toast'
 const LoginPage = ({role}) => {
   const { register, handleSubmit, formState: { errors }, getValues } = useForm();
   const navigate = useNavigate();
@@ -39,11 +40,23 @@ if(role=="admin"){
       });
       console.log("response====", response);
       dispatch(saveuser(response?.data?.data))
+     
+      toast.success("Login successful! Welcome back!", {
+        position: "top-right",  // Correct position usage as a string
+        duration: 5000,  // Duration for which toast will be displayed
+      });
+
       navigate(user.profileRoute);
     } catch (error) {
       dispatch(clearuser());
       console.error("Error during login:", error);
-      setLoginError('An error occurred during login. Please try again.');  // Set error message
+      setLoginError('An error occurred during login. Please try again.'); 
+      
+      // Trigger the error toast
+      toast.error("Login failed. Please check your credentials and try again.", {
+        position: "top-right",  // Correct position usage as a string
+        duration: 5000,  // Duration for which toast will be displayed
+      });
     }
   };
 

@@ -3,7 +3,7 @@ import express from 'express';
 import  {Booking} from '../models/bookingModel.js';
 import { Show } from '../models/showsModel.js';
 import { User } from '../models/usersModel.js';
-
+import Movie from '../models/movieModel.js'
 const router = express.Router();
 
 const calculateBookingAmount = (ticketType, isPremium, seatsBooked) => {
@@ -36,8 +36,8 @@ const calculateBookingAmount = (ticketType, isPremium, seatsBooked) => {
 // Controller to create a booking
 export const createBooking = async (req, res) => {
   try {
-    const { userId, showId, seatsBooked, ticketType, isPremium } = req.body;
-   if (!userId || !showId || !seatsBooked || !ticketType || isPremium === undefined) {
+    const { userId, showId,movieId,seatNumber,theaterId, seatsBooked,date, ticketType, isPremium } = req.body;
+   if (!userId || !showId ||!seatNumber||!movieId||!theaterId||!date|| !seatsBooked || !ticketType || isPremium === undefined) {
       return res.status(400).json({ message: 'Missing required booking fields' });
     }
 
@@ -47,8 +47,8 @@ export const createBooking = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
     const show = await Show.findById(showId);
-   
-    
+   const movie = await Movie.findById(movieId)
+   const theater = await Movie.findById(theaterId)
     
     // Calculate the total amount for the booking and price per ticket
     const { pricePerTicket, totalAmount } = calculateBookingAmount(ticketType[0], isPremium, seatsBooked);
@@ -56,7 +56,10 @@ export const createBooking = async (req, res) => {
     const booking = new Booking({
       userId,
       showId,
-     
+      movieId,
+      seatNumber,
+      date: new Date(`${date}`),
+      theaterId,
       seatsBooked,
       ticketType,
       isPremium,

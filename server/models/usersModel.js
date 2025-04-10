@@ -34,6 +34,12 @@ email: {
     type: String, 
     default: 'https://www.example.com/default-profile-pic.png'
   },
+  bookings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Booking'  // Referencing the Booking model
+    }
+  ],
   isActive:{
    type:Boolean,
    default:true,

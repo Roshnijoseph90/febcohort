@@ -32,6 +32,10 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  addedMovies: [{
+    type: mongoose.Types.ObjectId,
+    ref: "Movie"
+  }],
   resetToken: 
   { type: String },
 

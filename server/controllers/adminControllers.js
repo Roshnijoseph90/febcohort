@@ -11,7 +11,7 @@ export const adminsignup = async (req, res, next) => {
     console.log('signup hitted');
 
     // Collect admin data
-    const { name, email, mobile,  password, confirmPassword } = req.body;
+    const { name, email, mobile, addedMovies, password, confirmPassword } = req.body;
 
     if (!name || !email || !mobile || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields are required" });
@@ -34,7 +34,7 @@ export const adminsignup = async (req, res, next) => {
     const hashedPassword =  bcrypt.hashSync(password, 10); // Changed to async version
 
     // Save to the database
-    const newAdmin = new Admin({ name, email, mobile, password: hashedPassword });
+    const newAdmin = new Admin({ name, email, mobile, password: hashedPassword,addedMovies: addedMovies || [] });
     await newAdmin.save();
 
     // Generate token using ID and role

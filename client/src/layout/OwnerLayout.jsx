@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { axiosInstance } from "../config/axiosInstance";
 import { saveuser, clearuser } from '../redux/features/userSlice';
 
-export const OwnerLayout = () => {
+ const OwnerLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector((state) => state.user);
  // console.log(user, "==user");
