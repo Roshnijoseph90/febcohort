@@ -28,23 +28,16 @@ const ShowSchema = new mongoose.Schema({
     type: Number, // Base price of the ticket for this show (standard ticket price)
     required: true,
   },
-  ticketTypes: [
+  seats: [  // Array of seats
     {
-      type: {
-        type: [String], // Change from [String] to String since we're storing a single type
-        enum: ['standard', 'VIP', '3D', 'IMAX'], // Define the types of seats
-        required: true,
-      },
-      basePrice: {
-        type: Number, // Base price for the ticket type (standard seat)
-        required: true,
-      },
-      premiumPrice: {
-        type: Number, // Additional price for premium tickets (VIP, 3D, IMAX)
-        required: true,
-      },
-    },
-  ], // A list of ticket types with base and premium prices
+      seatId: { type: String, required: true }, // Seat identifier (A1, B1, etc.)
+      seatLabel: { type: String, required: true }, // Seat label (same as seatId)
+      seatType: { type: String, enum: ['Standard', 'VIP', '3D'], required: true }, // Seat type
+      basePrice: { type: Number, required: true }, // Base price (for standard seats)
+      premiumPrice: { type: Number, required: true }, // Premium price (for VIP, 3D, etc.)
+      isBooked: { type: Boolean, default: false }, // Whether the seat is booked or not
+    }
+  ],
   status: {
     type: String,
     enum: ['active', 'inactive'],

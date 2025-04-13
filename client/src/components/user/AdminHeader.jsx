@@ -33,7 +33,7 @@ const AdminHeader = () => {
           <Link to="/search">Search</Link>
         </Menu.Item>
         <Menu.Item key="4">
-          <Link to="/addmovies">Add Movies</Link>
+          <Link to="/admin/addmovies">Add Movies</Link>
         </Menu.Item>
         {/* Profile icon and logout button */}
         <Menu.Item key="5" style={{ padding: '0 10px' }}>

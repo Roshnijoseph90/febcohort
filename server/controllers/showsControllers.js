@@ -3,27 +3,23 @@ import { Show } from '../models/showsModel.js';
 // Create a new show
 export const createShow = async (req, res) => {
   try {
-    const { theaterId, movieId, showTime, availableSeats, price, ticketTypes } = req.body;
+    const { theaterId, movieId, showTime, availableSeats,price, seats } = req.body;
 
-  if (!theaterId || !movieId || !showTime || !availableSeats || !price || !ticketTypes) {
+  if (!theaterId || !movieId || !showTime || !availableSeats ||!price|| !seats ) {
       return res.status(400).json({ error: 'All fields are required' });
     }
-
-    // Validate the ticket types
-    if (!Array.isArray(ticketTypes) || ticketTypes.length === 0) {
-      return res.status(400).json({ error: 'Ticket types must be an array with at least one item' });
+    if (!Array.isArray(seats) || seats.length === 0) {
+      return res.status(400).json({ error: 'Seats must be an array with at least one seat' });
     }
-
-    // Validate each ticket type
-    for (const ticket of ticketTypes) {
-      if (!ticket.type || !['standard', 'VIP', '3D', 'IMAX'].includes(ticket.type)) {
-        return res.status(400).json({ error: `Invalid ticket type: ${ticket.type}` });
+    for (const seat of seats) {
+      if (!seat.seatId || !seat.seatLabel || !seat.seatType || !seat.basePrice || !seat.premiumPrice) {
+        return res.status(400).json({ error: 'Each seat must have seatId, seatLabel, seatType, basePrice, and premiumPrice' });
       }
-      if (!ticket.basePrice || !ticket.premiumPrice) {
-        return res.status(400).json({ error: 'Both basePrice and premiumPrice are required for each ticket type' });
+      if (!['Standard', 'VIP', '3D'].includes(seat.seatType)) {
+        return res.status(400).json({ error: `Invalid seat type: ${seat.seatType}` });
       }
     }
-
+    
     // Create a new show document
     const newShow = new Show({
       theaterId,
@@ -31,7 +27,8 @@ export const createShow = async (req, res) => {
       showTime,
       availableSeats,
       price,
-      ticketTypes,
+      seats, // Add the seat details directly to the seats array
+     
     });
 
     // Save the new show to the database
@@ -122,8 +119,20 @@ export const getShowsByTheater = async (req, res) => {
 export const updateShow = async (req, res) => {
   try {
     const { showId } = req.params;
-    const { showTime, availableSeats, price, ticketTypes} = req.body;
+    const { showTime, availableSeats, price, seats} = req.body;
+    if (!Array.isArray(seats) || seats.length === 0) {
+      return res.status(400).json({ error: 'Seats must be an array and contain at least one seat' });
+    }
 
+    // Validate each seat
+    for (const seat of seats) {
+      if (!seat.seatId || !seat.seatLabel || !seat.seatType || !seat.basePrice || !seat.premiumPrice) {
+        return res.status(400).json({ error: 'Each seat must have seatId, seatLabel, seatType, basePrice, and premiumPrice' });
+      }
+      if (!['Standard', 'VIP', '3D'].includes(seat.seatType)) {
+        return res.status(400).json({ error: `Invalid seat type: ${seat.seatType}` });
+      }
+    }
     // Find the show and update it
     const updatedShow = await Show.findByIdAndUpdate(
       showId,
@@ -131,7 +140,7 @@ export const updateShow = async (req, res) => {
         showTime,
         availableSeats,
         price,
-        ticketTypes
+        seats,
         
       },
       { new: true } // Returns the updated document
@@ -166,83 +175,86 @@ export const deleteShow = async (req, res) => {
 };
 
 // Add a new ticket type to a show
-export const addTicketTypeToShow = async (req, res) => {
+// Add a new seat type to a show
+export const addSeatTypeToShow = async (req, res) => {
   try {
     const { showId } = req.params;
-    const { type, basePrice, premiumPrice } = req.body;
+    const { seatId, seatLabel, seatType, basePrice, premiumPrice } = req.body;
 
-    // Find the show and add a new ticket type
+    // Find the show and add a new seat
     const show = await Show.findById(showId);
     if (!show) {
       return res.status(404).json({ error: 'Show not found' });
     }
 
-    show.ticketTypes.push({ type, basePrice, premiumPrice });
+    // Push the new seat to the seats array
+    show.seats.push({ seatId, seatLabel, seatType, basePrice, premiumPrice });
 
     // Save the updated show
     await show.save();
 
-    res.status(200).json({ message: 'Ticket type added successfully', show });
+    res.status(200).json({ message: 'Seat type added successfully', show });
   } catch (error) {
     res.status(error.statusCode || 500).json({ message: error.message || 'Internal server error' });
   }
 };
 
-// Update a ticket type in a show
-export const updateTicketTypeInShow = async (req, res) => {
+// Update a seat type in a show
+export const updateSeatTypeInShow = async (req, res) => {
   try {
-    const { showId, ticketTypeId } = req.params;
-    const { type, basePrice, premiumPrice } = req.body;
+    const { showId, seatId } = req.params;
+    const { seatLabel, seatType, basePrice, premiumPrice } = req.body;
 
-    // Find the show and the ticket type to update
+    // Find the show and the seat to update
     const show = await Show.findById(showId);
     if (!show) {
       return res.status(404).json({ error: 'Show not found' });
     }
 
-    const ticketType = show.ticketTypes.id(ticketTypeId);
-    if (!ticketType) {
-      return res.status(404).json({ error: 'Ticket type not found' });
+    const seat = show.seats.find(seat => seat.seatId === seatId);
+    if (!seat) {
+      return res.status(404).json({ error: 'Seat not found' });
     }
 
-    // Update the ticket type fields
-    ticketType.type = type;
-    ticketType.basePrice = basePrice;
-    ticketType.premiumPrice = premiumPrice;
+    // Update the seat fields
+    seat.seatLabel = seatLabel || seat.seatLabel;
+    seat.seatType = seatType || seat.seatType;
+    seat.basePrice = basePrice || seat.basePrice;
+    seat.premiumPrice = premiumPrice || seat.premiumPrice;
 
     // Save the updated show
     await show.save();
 
-    res.status(200).json({ message: 'Ticket type updated successfully', show });
+    res.status(200).json({ message: 'Seat type updated successfully', show });
   } catch (error) {
     res.status(error.statusCode || 500).json({ message: error.message || 'Internal server error' });
   }
 };
 
-// Delete a ticket type from a show
-export const deleteTicketTypeFromShow = async (req, res) => {
+// Delete a seat type from a show
+export const deleteSeatTypeFromShow = async (req, res) => {
   try {
-    const { showId, ticketTypeId } = req.params;
+    const { showId, seatId } = req.params;
 
-    // Find the show and remove the ticket type
+    // Find the show and remove the seat type
     const show = await Show.findById(showId);
     if (!show) {
       return res.status(404).json({ error: 'Show not found' });
     }
 
-    const ticketType = show.ticketTypes.id(ticketTypeId);
-    if (!ticketType) {
-      return res.status(404).json({ error: 'Ticket type not found' });
+    const seatIndex = show.seats.findIndex(seat => seat.seatId === seatId);
+    if (seatIndex === -1) {
+      return res.status(404).json({ error: 'Seat not found' });
     }
 
-    // Remove the ticket type
-    ticketType.remove();
+    // Remove the seat type from the seats array
+    show.seats.splice(seatIndex, 1);
 
     // Save the updated show
     await show.save();
 
-    res.status(200).json({ message: 'Ticket type deleted successfully', show });
+    res.status(200).json({ message: 'Seat type deleted successfully', show });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message || 'Internal server error' });
+    res.status(500).json({ error: 'Failed to delete seat type', details: error.message });
   }
 };

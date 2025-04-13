@@ -4,13 +4,14 @@ import  {Booking} from '../models/bookingModel.js';
 import { Show } from '../models/showsModel.js';
 import { User } from '../models/usersModel.js';
 import Movie from '../models/movieModel.js'
+import { Theater } from '../models/theaterModel.js';
 const router = express.Router();
 
-const calculateBookingAmount = (ticketType, isPremium, seatsBooked) => {
+const calculateBookingAmount = (seatType, isPremium, seatsBooked) => {
   let basePrice = 0;
 
   // Set base price based on ticket type
-  switch (ticketType) {
+  switch (seatType) {
     case 'VIP':
       basePrice = 300;
       break;
@@ -32,51 +33,68 @@ const calculateBookingAmount = (ticketType, isPremium, seatsBooked) => {
 
   return { pricePerTicket, totalAmount };
 };
-
 // Controller to create a booking
 export const createBooking = async (req, res) => {
   try {
-    const { userId, showId,movieId,seatNumber,theaterId, seatsBooked,date, ticketType, isPremium } = req.body;
-   if (!userId || !showId ||!seatNumber||!movieId||!theaterId||!date|| !seatsBooked || !ticketType || isPremium === undefined) {
+    const { userId, showId, movieId, seatNumbers, theaterId, dateTime, isPremium, status } = req.body;
+
+    if (!userId || !showId || !seatNumbers || !movieId || !theaterId || !dateTime) {
       return res.status(400).json({ message: 'Missing required booking fields' });
     }
 
-    // Check if the user and show exist
+    // Check if user, show, movie, and theater exist
     const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    const show = await Show.findById(showId);
-   const movie = await Movie.findById(movieId)
-   const theater = await Movie.findById(theaterId)
-    
-    // Calculate the total amount for the booking and price per ticket
-    const { pricePerTicket, totalAmount } = calculateBookingAmount(ticketType[0], isPremium, seatsBooked);
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
+    const show = await Show.findById(showId);
+    if (!show) return res.status(404).json({ message: 'Show not found' });
+
+    const movie = await Movie.findById(movieId);
+    if (!movie) return res.status(404).json({ message: 'Movie not found' });
+
+    const theater = await Theater.findById(theaterId); // ✅ FIXED: previously was Movie
+    if (!theater) return res.status(404).json({ message: 'Theater not found' });
+
+    // Validate seat types
+    const seatTypes = [...new Set(seatNumbers.map(seat => seat.seatType))];
+    if (seatTypes.length > 1) {
+      return res.status(400).json({ message: 'All selected seats must be of the same seat type' });
+    }
+
+    const seatType = seatTypes[0];
+    const seatsBooked = seatNumbers.length;
+
+    // Calculate amount
+    const { pricePerTicket, totalAmount } = calculateBookingAmount(seatType, isPremium, seatsBooked);
+
+    // 📅 Split date and time
+    const fullDateTime = new Date(dateTime);
+    const date = fullDateTime.toISOString().split('T')[0];
+    const timeSlot = fullDateTime.toISOString().split('T')[1].split('.')[0]; // HH:MM:SS
+
+    // Create the booking
     const booking = new Booking({
       userId,
       showId,
-      movieId,
-      seatNumber,
-      date: new Date(`${date}`),
       theaterId,
-      seatsBooked,
-      ticketType,
-      isPremium,
-      price: pricePerTicket, 
-      totalAmount, 
-      bookingStatus: "confirmed"        
+      selectedSeats: seatNumbers,
+      totalAmount,
+      date,
+      timeSlot,
+      status: status || 'confirmed',
     });
 
-   await booking.save();
+    await booking.save();
 
-    // Respond with the booking confirmation
-    res.status(201).json({ message: 'Booking created successfully', booking });
+    res.status(201).json({data:booking, message: 'Booking created successfully', booking });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error, could not create booking' });
   }
 };
+
+
+  
 // Controller to get all bookings
 export const getAllBookings = async (req, res) => {
   try {
@@ -128,18 +146,18 @@ export const cancelBooking = async (req, res) => {
 export const updateBooking = async (req, res) => {
   try {
     const { bookingId } = req.params;
-    const { seatsBooked, ticketType, isPremium } = req.body;
+    const { seatsBooked, seatType, isPremium } = req.body;
 
-   if (!seatsBooked || !ticketType) {
+   if (!seatsBooked || !seatType) {
       return res.status(400).json({ message: 'Missing required booking fields' });
     }
 
     // Ensure ticketType is an array and take the first element if it is
-    const ticketTypeToCheck = Array.isArray(ticketType) ? ticketType[0] : ticketType;
+    const seatTypeToCheck = Array.isArray(seatType) ? seatType[0] : seatType;
 
     // Validate that the new ticketType is one of the allowed types
-    const allowedTicketTypes = ['standard', 'VIP', '3D', 'IMAX'];
-    if (!allowedTicketTypes.includes(ticketTypeToCheck)) {
+    const allowedSeatTypes = ['standard', 'VIP', '3D', 'IMAX'];
+    if (!allowedSeatTypes.includes(seatTypeToCheck)) {
       return res.status(400).json({ message: 'Invalid ticket type' });
     }
 
@@ -149,7 +167,7 @@ export const updateBooking = async (req, res) => {
       return res.status(404).json({ message: 'Booking not found' });
     }
 
-    const calculateBookingAmount = (ticketType, isPremium, seatsBooked) => {
+    const calculateBookingAmount = (seatType, isPremium, seatsBooked) => {
       let basePrice = 0;
 
       // Set base price based on ticket type

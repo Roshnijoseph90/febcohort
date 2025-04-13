@@ -4,7 +4,7 @@ import Home from '../pages/user/Home';
 import LoginPage from '../pages/Shared/LoginPage';
 import SignUpPage from '../pages/Shared/SignUpPage';
 import Booking from '../pages/user/Booking';
-
+import Payment from '../pages/user/Payment'
 import Profile from '../pages/user/Profile';
 import ProfileAdmin from '../pages/admin/ProfileAdmin';
 import ProfileOwner from '../pages/owner/ProfileOwner';
@@ -17,9 +17,9 @@ import Search from '../pages/user/Search';
 import MoviesDetails from '../pages/user/MoviesDetails';
 import Showtimes from '../pages/user/Showtimes';
 import OwnerLayout from '../layout/ownerLayout';
-
+import Review from '../pages/user/Review'
 import AdminLayout from '../layout/AdminLayout';
-
+import AddMovies from '../pages/admin/AddMovies';
 export const router = createBrowserRouter([
   {
     path: "",
@@ -36,11 +36,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/logout",
-        element: <Logout role="user"/>,  // Logout Page
+        element: <Logout />,  // Logout Page
       },
       {
         path: "/signup",
         element: <SignUpPage />,  // Signup Page
+      },
+      {
+        path: "/moviesDetails/:id/review",  
+        element: <Review /> 
       },
       {
         path: "movies",
@@ -50,6 +54,7 @@ export const router = createBrowserRouter([
         path: "/moviesDetails/:id",
         element: <MoviesDetails />,
       },
+      
       {
         path: "/showtimes/:movieId",
         element: <Showtimes />,
@@ -69,16 +74,17 @@ export const router = createBrowserRouter([
             element: <Booking />,  // Book Ticket Page
           },
           {
-            path: "payment",
-            element: <h1>Payment </h1>,  // Payment Page (Placeholder)
+            path:"payment/:bookingId",
+            element:<Payment/>
           },
-          {
+         
+         {
             path:"payment/sucess",
-            element:<h1>payment sucess</h1>
+            element:<h1>payment success</h1>
           },
           {
             path:"payment/cancel",
-            element:<h1>payment sucess</h1>
+            element:<h1>payment success</h1>
           }
         ],
       },
@@ -103,7 +109,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "signup",
-        element: <SignUpPage />,
+        element: <SignUpPage role="owner"/>,
       },
       {
         path: "profile",
@@ -132,8 +138,12 @@ export const router = createBrowserRouter([
         element: <ProfileAdmin />,
       },
       {
+        path:'addmovies',
+        element:<AddMovies/>
+      },
+      {
         path: "logout",  // Corrected to relative path
-        element: <Logout />,  // Logout Page
+        element: <Logout  />,  // Logout Page
       },
     ],
   },

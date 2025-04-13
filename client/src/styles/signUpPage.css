@@ -1,102 +1,100 @@
 
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-/* SignUpPage.css */
-
-.signup-container {
+/* Apply styles only for the signup page */
+.signup-page .signup-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f4;
-  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin-top: 40px; 
 }
 
-.card-body {
-  border: 2px solid #ddd; /* Border for the entire card */
-  border-radius: 10px;
+.signup-page .card-body {
+  background-color: #fff;
+  border: 2px solid #ccc; /* Adding a border around the card */
+  border-radius: 8px; /* Optional, for rounded corners */
   padding: 40px;
   width: 100%;
-  max-width: 400px;
-  margin: 20px;
-  background-color: white; /* Add white background to card */
+  max-width: 400px; /* Ensures form doesn't get too wide */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for better visibility */
 }
 
-.card-body h2 {
+/* Form title */
+.signup-page .card-body h2 {
   text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
   color: #333;
-  margin-bottom: 30px;
 }
 
-.card-body .signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* Styling for form inputs */
+.signup-page .signup-form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
-.card-body .signup-form div {
-  display: flex;
-  flex-direction: column;
-}
-
-.card-body label {
+/* Label for inputs */
+.signup-page .signup-form label {
   font-weight: bold;
-  margin-bottom: 8px;
-  color: #555;
+  margin-bottom: 5px;
+  display: inline-block;
+  font-size: 14px;
 }
 
-.card-body input {
-  padding: 12px;
-  border: 1px solid #ddd; /* Border around input fields */
-  border-radius: 8px;
-  font-size: 16px;
-  outline: none;
-  width: 100%; /* Ensures input takes full width */
-  transition: border-color 0.3s ease;
-}
-
-.card-body input:focus {
-  border-color: #0056b3; /* Blue border on focus */
-}
-
-.card-body p {
+/* Error message */
+.signup-page .signup-form p {
   color: red;
-  font-size: 14px;
+  font-size: 12px;
 }
 
-.card-body button {
+/* Submit Button */
+.signup-page .signup-form button {
+  width: 100%;
   padding: 12px;
-  background-color: #0056b3;
-  color: white;
-  font-size: 16px;
+  background-color: #007bff;
   border: none;
-  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.card-body button:hover {
-  background-color: #00448d;
-}
-
-.card-body .links {
   margin-top: 20px;
-  text-align: center;
 }
 
-.card-body .links a {
-  color: #0056b3;
+.signup-page .signup-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Links at the bottom */
+.signup-page .links {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.signup-page .links a {
   text-decoration: none;
+  color: #007bff;
   font-size: 14px;
-  text-align: center;
-  display: block;  
 }
 
-.card-body .links a:hover {
+.signup-page .links a:hover {
   text-decoration: underline;
 }
 
-.card-body .signup-error {
+/* Styling for error messages (if any) */
+.signup-page .signup-error {
   color: red;
+  font-size: 14px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-top: 10px;
 }

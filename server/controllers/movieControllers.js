@@ -1,5 +1,6 @@
 import Movie from '../models/movieModel.js'
 import { cloudinaryInstance } from '../config/cloudinary.js';
+import mongoose from "mongoose";
 
 
 export const getAllMovies = async (req, res, next) => {
@@ -28,11 +29,15 @@ export const getAllMovies = async (req, res, next) => {
   
   export const createMovie = async (req, res, next) => {
     try {
-      const{title,description, genre,releaseDate,language,duration,rating,showtimes} = req.body;
+      const{title,description, genre,releaseDate,language,duration,rating,showtimes,admin} = req.body;
       
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
       }
+       // ✅ Check admin ID
+    if (!admin || !mongoose.Types.ObjectId.isValid(admin)) {
+      return res.status(400).json({ message: "Invalid admin ID" });
+    }
       const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path);
     console.log("Cloudinary Response:", cloudinaryRes);
       const newMovie = new Movie({
@@ -44,9 +49,11 @@ export const getAllMovies = async (req, res, next) => {
          duration,
          poster:cloudinaryRes.url,
           rating,
-          showtimes
+          showtimes,
+          admin,
           })
        await  newMovie.save();
+       
        console.log('Movie Created:', newMovie); 
       res.json({data:newMovie, message: "movie created sucessfully" });
     } catch (error) {

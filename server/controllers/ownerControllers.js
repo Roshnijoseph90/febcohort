@@ -9,9 +9,9 @@ export const ownersignup = async (req, res, next) => {
   try {
     console.log('signup hitted');
 
-    const { name, email, mobile, theaters, password, confirmPassword } = req.body;
+    const { name, email, mobile,  password, confirmPassword } = req.body;
 
-    if (!name || !email || !mobile ||!theaters|| !password || !confirmPassword) {
+    if (!name || !email || !mobile || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields are required" });
     }
 

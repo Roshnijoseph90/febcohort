@@ -2,63 +2,48 @@ import mongoose from 'mongoose';
 
 // Define the schema for Booking
 const bookingSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-  movieId:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Movie',
-    required: true,
-  },
   
- showId: {
+  showId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Show',
+    ref: 'Show', // Reference to the Show model
     required: true,
-  },
-  date:{
-    type:Date,
-    required:true,
   },
   theaterId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Theater',  // Referencing the Theater model
-    required: true,   // Ensure this field is required
-  },
-  seatsBooked: {
-    type: Number,
+    ref: 'Theater', // Reference to the Theater model
     required: true,
   },
-  seatNumbers: {
-    type: [String],  // Array of seat numbers (e.g., ['A1', 'A2'])
-    required: true,
-  },
-  ticketType: {
-    type: [String],
-    enum: ['standard', 'VIP', '3D', 'IMAX'],
-    required: true,
-  },
-  isPremium: {
-    type: Boolean,
-    required: true,  // Whether the user chose a premium seat or not
-  },
-  price: {
-    type: Number,
-    required: true,  // The price for the selected ticket type (base or premium)
-  },
+  selectedSeats: [
+    {
+      seatId: { type: String, required: true },
+      seatLabel: { type: String, required: true },
+      seatType: { type: String, required: true }, // Standard, VIP, etc.
+    },
+  ],
   totalAmount: {
     type: Number,
-    required: true,  // The total amount for the booking (seats * price)
+    required: true, // Store the total amount of the booking
   },
-  bookingStatus: {
+  date: {
+    type: Date,
+    required: true,
+  },
+  timeSlot: {
     type: String,
-    enum: ['pending', 'confirmed', 'cancelled'],
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'completed', 'cancelled','confirmed'],
     default: 'pending',
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to the User model (if you have a user system)
+    required: true,
   },
 }, {
   timestamps: true,
 });
+
 export const Booking = mongoose.model('Booking', bookingSchema);
-  

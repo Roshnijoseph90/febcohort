@@ -18,7 +18,6 @@ const ProfileAdmin = () => {
       
       <h5>Welcome: {adminProfile?.name}</h5>
       <h5>Email ID:  {adminProfile?.email}</h5>
-      <h5>Location: {adminProfile?.location}</h5>
       <h5>Mobile: {adminProfile?.mobile}</h5>
       
       

@@ -13,26 +13,30 @@ const SignUpPage = ({ role }) => {
   const dispatch = useDispatch();
   const [signUpError, setSignUpError] = useState(null);  // State for sign-up errors
 
-  const user = {
-    role: "user",
-    signUpAPI: "/user/signup",
-    loginRoute: "/login",
-    profileRoute: "/profile",
-  };
-
-  if (role === "owner") {
-    user.role = "owner";
-    user.signUpAPI = "/owner/signup";
-    user.profileRoute = "/owner/profile";
-    user.loginRoute = "login";
-  }
-  if (role === "admin") {
-    user.role = "admin";
-    user.signUpAPI = "/admin/signup";
-    user.profileRoute = "/admin/profile";
-    user.loginRoute = "/admin/login";
-  }
-
+  
+    let user = {
+      role: "user",  // Default to "user" role
+      signUpAPI: "/user/signup",  // Default API route for user
+      loginRoute: "/login",  // Default login route for user
+      profileRoute: "/profile",  // Default profile route for user
+    };
+  
+    // Dynamically update the user object based on the role
+    if (role === "owner") {
+      user = {
+        role: "owner",
+        signUpAPI: "/owner/signup",
+        profileRoute: "/owner/profile",
+        loginRoute: "/owner/login",
+      };
+    } else if (role === "admin") {
+      user = {
+        role: "admin",
+        signUpAPI: "/admin/signup",
+        profileRoute: "/admin/profile",
+        loginRoute: "/admin/login",
+      };
+    }
   const onSubmit = async (data) => {
     try {
       const response = await axiosInstance({
@@ -50,6 +54,7 @@ const SignUpPage = ({ role }) => {
   };
 
   return (
+    <div className="signup-page">
     <div className="signup-container">
       <div className="card-body">
         <h2>Sign Up Now! {user.role}</h2>
@@ -155,13 +160,14 @@ const SignUpPage = ({ role }) => {
           </div>
         </form>
 
-        {/* Existing user login link */}
+        
         <div className="links"  >
           <Link to={user.loginRoute}>Already have an account? Log in</Link>
         </div>
       </div>
     </div>
+    </div>
   );
-};
+}
 
 export default SignUpPage;

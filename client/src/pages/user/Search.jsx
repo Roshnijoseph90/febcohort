@@ -65,8 +65,8 @@ const Search = () => {
         {movies.length > 0 ? (
           movies.map((movie) => (
             <div 
-              key={movie._id} 
-              onClick={() => handleMovieClick(movie._id)} 
+              key={movies?._id} 
+              onClick={() => handleMovieClick(movies?._id)} 
               style={{ cursor: 'pointer', border: '1px solid #ccc', margin: '10px', padding: '10px', borderRadius: '5px' }}
             >
               <h3>{movie.title}</h3>

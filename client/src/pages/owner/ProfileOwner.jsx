@@ -18,7 +18,6 @@ const ProfileOwner = () => {
       
       <h5>Welcome: {ownerProfile?.name}</h5>
       <h5>Email ID:  {ownerProfile?.email}</h5>
-      <h5>Location: {ownerProfile?.location}</h5>
       <h5>Mobile: {ownerProfile?.mobile}</h5>
       
       

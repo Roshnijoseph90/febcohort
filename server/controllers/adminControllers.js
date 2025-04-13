@@ -105,7 +105,7 @@ export const adminLogin= async (req, res, next) => {
 // admin profile fetch
 export const adminProfile = async (req, res, next) => {
   try {
-     //ownerId
+     
      const adminId = req.admin.id;
      const adminData = await Admin.findById(adminId)
      res.json({data:adminData,message:"admin profile fetched"})
