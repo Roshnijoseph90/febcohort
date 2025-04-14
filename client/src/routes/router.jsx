@@ -20,6 +20,7 @@ import OwnerLayout from '../layout/ownerLayout';
 import Review from '../pages/user/Review'
 import AdminLayout from '../layout/AdminLayout';
 import AddMovies from '../pages/admin/AddMovies';
+import ForgotPassword from '../pages/user/ForgotPassword';
 export const router = createBrowserRouter([
   {
     path: "",
@@ -32,15 +33,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <LoginPage />,  // Login Page
+        element: <LoginPage />,  
       },
       {
         path: "/logout",
-        element: <Logout />,  // Logout Page
+        element: <Logout />,  
       },
       {
         path: "/signup",
-        element: <SignUpPage />,  // Signup Page
+        element: <SignUpPage />,  
       },
       {
         path: "/moviesDetails/:id/review",  
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "movies",
-        element: <Movies />,  // Movies Page
+        element: <Movies />,  
       },
       {
         path: "/moviesDetails/:id",
@@ -63,15 +64,15 @@ export const router = createBrowserRouter([
       // Protecting Routes
       {
         path: "user",
-        element: <ProtectRoute />,  // ProtectRoute for authentication check
+        element: <ProtectRoute />, 
         children: [
           {
             path: "profile",
-            element: <Profile />,  // Profile Page
+            element: <Profile />, 
           },
           {
-            path: "booking/:id",  // Fixed to be relative
-            element: <Booking />,  // Book Ticket Page
+            path: "booking/:id",  
+            element: <Booking />,  
           },
           {
             path:"payment/:bookingId",
@@ -90,12 +91,16 @@ export const router = createBrowserRouter([
       },
       
       {
-        path: "/search",  // Route for the Search page
-        element: <Search />,  // Search Page
+        path: "/forgot-password",  
+        element: <ForgotPassword />,  
+      },
+      {
+        path: "/search",  
+        element: <Search />,  
       },
       {
         path: "*",
-        element: <ErrorPage home='/' />,  // A 404 page or some error message
+        element: <ErrorPage home='/' />, 
       },
     ],
   },
@@ -116,8 +121,8 @@ export const router = createBrowserRouter([
         element: <ProfileOwner />,
       },
       {
-        path: "logout",  // Corrected to relative path
-        element: <Logout />,  // Logout Page
+        path: "logout",  
+        element: <Logout />,  
       },
     ],
   },

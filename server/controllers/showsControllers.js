@@ -8,6 +8,13 @@ export const createShow = async (req, res) => {
   if (!theaterId || !movieId || !showTime || !availableSeats ||!price|| !seats ) {
       return res.status(400).json({ error: 'All fields are required' });
     }
+    if (
+      !theaterId || !movieId || 
+      theaterId.trim() === '' || movieId.trim() === '' ||
+      !showTime || !availableSeats || !price || !seats
+    ) {
+      return res.status(400).json({ error: 'All fields are required and must be non-empty' });
+    }
     if (!Array.isArray(seats) || seats.length === 0) {
       return res.status(400).json({ error: 'Seats must be an array with at least one seat' });
     }
@@ -83,10 +90,10 @@ export const getShowsByMovie = async (req, res) => {
     const shows = await Show.find({ movieId }).populate('theaterId');  // Populate theater data if needed
 
     // If no shows are found for the given movieId
-    if (shows.length === 0) {
+    if (!shows||shows.length === 0) {
       return res.status(404).json({ error: 'No shows found for this movie.' });
     }
-  res.status(200).json({ data:shows ,message:"feched show by movie id sucessfully"});
+  res.status(200).json({shows ,message:"feched show by movie id sucessfully"});
   } catch (error) {
     // Handle any errors that might occur
     

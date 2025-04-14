@@ -1,9 +1,10 @@
 // Correct import for bcryptjs
 import bcrypt from 'bcryptjs';
-
+//import nodemailer from 'nodemailer';
 import { generateToken } from '../utils/token.js';
 import { User } from '../models/usersModel.js';
 import crypto from 'crypto'
+
 const NODE_ENV = process.env.NODE_ENV;
 
 
@@ -322,4 +323,3 @@ export const changePassword = async (req, res) => {
     console.log(error);
   }
 };
-

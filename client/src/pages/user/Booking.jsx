@@ -1,5 +1,5 @@
 
-  import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {axiosInstance} from "../../config/axiosInstance";
 import { useParams } from "react-router";
 import {
@@ -38,7 +38,7 @@ const Booking = () => {
     const fetchShowDetails = async () => {
       if (!id) return; // ✅ Prevent unnecessary API calls
       try {
-        const response = await axiosInstance.get(`/booking/get-booking-byId/${id}`);
+        const response = await axiosInstance.get(`shows/get-shows-bymovie/${id}`);
         if (response.data.shows.length > 0) {
           setShows(response.data.shows);
 
@@ -277,7 +277,7 @@ const Booking = () => {
       setIsBooking(false); 
     }
   };
-  const totalPrice = price.reduce((sum, p) => sum + p, 0);
+  const totalAmount = price.reduce((sum, p) => sum + p, 0);
   return (
     <div className="position-relative w-100 h-100 bg-dark">
       <Container className="seating-booking-container">

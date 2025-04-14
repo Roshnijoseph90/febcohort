@@ -12,7 +12,7 @@ router.post('/create-booking', authUser,createBooking);
 router.get('/get-all-booking', authAdmin,getAllBookings);
 
 // Route to get bookings by a specific user
-router.get('/get-booking-byId/:userId', authAdmin,getBookingsByUser);
+router.get('/get-booking-byId/:userId', authUser,getBookingsByUser);
 
 // Route to update booking status (e.g., from pending to confirmed or cancelled)
 router.put('/update-booking/:bookingId',authUser, updateBooking);

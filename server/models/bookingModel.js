@@ -13,6 +13,10 @@ const bookingSchema = new mongoose.Schema({
     ref: 'Theater', // Reference to the Theater model
     required: true,
   },
+  bookedSeatsCount: {
+    type: Number,
+    required: true,
+  },
   selectedSeats: [
     {
       seatId: { type: String, required: true },

@@ -43,18 +43,17 @@ export const createBooking = async (req, res) => {
     }
 
     // Check if user, show, movie, and theater exist
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    const show = await Show.findById(showId);
-    if (!show) return res.status(404).json({ message: 'Show not found' });
-
-    const movie = await Movie.findById(movieId);
-    if (!movie) return res.status(404).json({ message: 'Movie not found' });
-
-    const theater = await Theater.findById(theaterId); // ✅ FIXED: previously was Movie
-    if (!theater) return res.status(404).json({ message: 'Theater not found' });
-
+    if (
+      !userId ||
+      !showId ||
+      !Array.isArray(seatNumbers) ||
+      seatNumbers.length === 0 ||
+      !movieId ||
+      !theaterId ||
+      !dateTime
+    ) {
+      return res.status(400).json({ message: 'Missing or invalid booking fields' });
+    }
     // Validate seat types
     const seatTypes = [...new Set(seatNumbers.map(seat => seat.seatType))];
     if (seatTypes.length > 1) {
@@ -62,10 +61,10 @@ export const createBooking = async (req, res) => {
     }
 
     const seatType = seatTypes[0];
-    const seatsBooked = seatNumbers.length;
+    const bookedSeatsCount = seatNumbers.length;
 
     // Calculate amount
-    const { pricePerTicket, totalAmount } = calculateBookingAmount(seatType, isPremium, seatsBooked);
+    const { pricePerTicket, totalAmount } = calculateBookingAmount(seatType, isPremium, bookedSeatsCount);
 
     // 📅 Split date and time
     const fullDateTime = new Date(dateTime);
@@ -78,6 +77,7 @@ export const createBooking = async (req, res) => {
       showId,
       theaterId,
       selectedSeats: seatNumbers,
+      bookedSeatsCount, 
       totalAmount,
       date,
       timeSlot,

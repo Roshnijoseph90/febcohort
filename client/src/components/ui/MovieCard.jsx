@@ -12,7 +12,7 @@ const MovieCard = ({ movie }) => {
   };
 
   const handleBook = () => {
-    navigate(`user/booking/${_id}`);
+    navigate(`/user/booking/${_id}`);
   };
 
   return (
