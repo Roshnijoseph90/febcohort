@@ -26,7 +26,45 @@ export const createShow = async (req, res) => {
         return res.status(400).json({ error: `Invalid seat type: ${seat.seatType}` });
       }
     }
-    
+    // Check if the showTime overlaps with any other show at the same theater
+    const existingShow = await Show.findOne({
+      theaterId,
+      showTime: { $gte: new Date(showTime) }, // check if the time overlaps
+    });
+
+    if (existingShow) {
+      return res.status(400).json({ error: 'There is already a show scheduled at this time in this theater.' });
+    }
+    const groupedBySeatType = {};
+
+    seats.forEach(seat => {
+      const rowLabel = seat.seatLabel[0]; // e.g., A1 → A
+      const seatType = seat.seatType;
+      const price = ['Standard'].includes(seatType) ? seat.basePrice : seat.premiumPrice;
+
+      if (!groupedBySeatType[seatType]) {
+        groupedBySeatType[seatType] = {};
+      }
+
+      if (!groupedBySeatType[seatType][rowLabel]) {
+        groupedBySeatType[seatType][rowLabel] = [];
+      }
+      groupedBySeatType[seatType][rowLabel].push({
+        seatId: seat.seatId,
+        seatLabel: seat.seatLabel,
+        price,
+        isBooked: false,
+      });
+    });
+
+    const seatTypes = Object.entries(groupedBySeatType).map(([seatType, rowsObj]) => ({
+      seatType,
+      rows: Object.entries(rowsObj).map(([rowLabel, seats]) => ({
+        rowLabel,
+        seats,
+      })),
+    }));
+
     // Create a new show document
     const newShow = new Show({
       theaterId,
@@ -34,8 +72,8 @@ export const createShow = async (req, res) => {
       showTime,
       availableSeats,
       price,
-      seats, // Add the seat details directly to the seats array
-     
+      //seats, // Add the seat details directly to the seats array
+      seatTypes,
     });
 
     // Save the new show to the database

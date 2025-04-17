@@ -6,20 +6,23 @@ import { useParams } from "react-router";
 import { Card, Button } from "react-bootstrap"; // Import Bootstrap Components
 import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
+import toast from "react-hot-toast";
 
 const Payment = () => {
   const [loading, setLoading] = useState(false);
   const [booking, setBooking] = useState(null);
-  const { id } = useParams();
+  const { bookingId } = useParams();
   const navigate = useNavigate();
 
   // Load Stripe
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
   useEffect(() => {
+    if (!bookingId) return;
+
     const fetchBookingDetails = async () => {
       try {
-        const response = await axiosInstance.get(`/bookings/${id}`);
+        const response = await axiosInstance.get(`/bookings/${bookingId}`);
         setBooking(response.data.booking);
       } catch (error) {
         alert("Failed to fetch booking details!");
@@ -27,7 +30,7 @@ const Payment = () => {
     };
 
     fetchBookingDetails();
-  }, [id]);
+  }, [bookingId]);
 
   const createOrder = async () => {
     if (!booking) {
@@ -40,7 +43,7 @@ const Payment = () => {
       const stripe = await stripePromise;
 
       // Send booking details to backend to create the Stripe Checkout session
-      const { data } = await api.post("/payment/create-checkout-session", {
+      const { data } = await axiosInstance.post("/payment/create-checkout-session", {
         products: [
           {
             movieId: booking.movieId,
@@ -65,7 +68,8 @@ const Payment = () => {
 
       setLoading(false);
     } catch (error) {
-      alert("Something went wrong!");
+      console.error("Stripe checkout error:", error);
+      toast.error("Something went wrong!");
       setLoading(false);
     }
   };

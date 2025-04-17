@@ -36,9 +36,9 @@ const calculateBookingAmount = (seatType, isPremium, seatsBooked) => {
 // Controller to create a booking
 export const createBooking = async (req, res) => {
   try {
-    const { userId, showId, movieId, seatNumbers, theaterId, dateTime, isPremium, status } = req.body;
+    const { userId, showId, movieId, selectedSeats, theaterId, date,timeSlot, isPremium, status } = req.body;
 
-    if (!userId || !showId || !seatNumbers || !movieId || !theaterId || !dateTime) {
+    if (!userId || !showId || !selectedSeats||!Array.isArray(selectedSeats) || selectedSeats.length === 0 || !movieId || !theaterId || !date||!timeSlot) {
       return res.status(400).json({ message: 'Missing required booking fields' });
     }
 
@@ -46,37 +46,38 @@ export const createBooking = async (req, res) => {
     if (
       !userId ||
       !showId ||
-      !Array.isArray(seatNumbers) ||
-      seatNumbers.length === 0 ||
+      !Array.isArray(selectedSeats) ||
+      selectedSeats.length === 0 ||
       !movieId ||
       !theaterId ||
-      !dateTime
+      !date||
+      !timeSlot
     ) {
       return res.status(400).json({ message: 'Missing or invalid booking fields' });
     }
     // Validate seat types
-    const seatTypes = [...new Set(seatNumbers.map(seat => seat.seatType))];
+    const seatTypes = [...new Set(selectedSeats.map(seat => seat.seatType))];
     if (seatTypes.length > 1) {
       return res.status(400).json({ message: 'All selected seats must be of the same seat type' });
     }
 
     const seatType = seatTypes[0];
-    const bookedSeatsCount = seatNumbers.length;
+    const bookedSeatsCount = selectedSeats.length;
 
     // Calculate amount
     const { pricePerTicket, totalAmount } = calculateBookingAmount(seatType, isPremium, bookedSeatsCount);
 
     // 📅 Split date and time
-    const fullDateTime = new Date(dateTime);
+    /*const fullDateTime = new Date(dateTime);
     const date = fullDateTime.toISOString().split('T')[0];
-    const timeSlot = fullDateTime.toISOString().split('T')[1].split('.')[0]; // HH:MM:SS
+    const timeSlot = fullDateTime.toISOString().split('T')[1].split('.')[0]; // HH:MM:SS*/
 
     // Create the booking
     const booking = new Booking({
       userId,
       showId,
       theaterId,
-      selectedSeats: seatNumbers,
+      selectedSeats,
       bookedSeatsCount, 
       totalAmount,
       date,
@@ -86,7 +87,7 @@ export const createBooking = async (req, res) => {
 
     await booking.save();
 
-    res.status(201).json({data:booking, message: 'Booking created successfully', booking });
+    res.status(201).json({booking, message: 'Booking created successfully',});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error, could not create booking' });
