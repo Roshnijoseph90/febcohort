@@ -160,11 +160,15 @@ const Booking = () => {
       if (response.data) {
         toast.success("Redirecting to payment...");
         setTimeout(() => {
-          navigate(`/user/payment/${response.data.booking._id}`);
+          navigate(`/user/payment/${_id}`);
+          console.log("Booking response:", response.data);
+
         }, 2000);
       }
     } catch (err) {
+      console.log("booking failed error",err)
       toast.error(err?.response?.data?.message || "Booking failed.");
+      
     } finally {
       setIsBooking(false);
     }
@@ -353,5 +357,7 @@ const Booking = () => {
     </div>
   );
 };
+
+
 
 export default Booking;

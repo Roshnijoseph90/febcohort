@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import {axiosInstance} from "../../config/axiosInstance";
 import { useParams } from "react-router";
