@@ -15,7 +15,7 @@ import Movies from '../pages/user/Movies';
 import Logout from '../pages/user/Logout';
 import MoviesDetails from '../pages/user/MoviesDetails';
 import Showtimes from '../pages/user/Showtimes';
-import OwnerLayout from '../layout/ownerLayout';
+import OwnerLayout from '../layout/OwnerLayout'
 import Review from '../pages/user/Review'
 import AdminLayout from '../layout/AdminLayout';
 import AddMovies from '../pages/admin/AddMovies';
