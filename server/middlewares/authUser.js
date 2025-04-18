@@ -32,8 +32,4 @@ export const authUser = (req,res,next)=>{
       }
        
 
-    /*}catch (error) {
-        res.status(error.statusCode || 500).json({ message: error.message || 'Internal server error' });
-        console.log(error);
-      }*/
 }

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';  // Import Link for navigation
-import { axiosInstance } from '../../config/axiosInstance';  // Make sure the path is correct
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import {clearuser,saveuser} from "../../redux/features/userSlice"
-import { Toaster,toast } from 'react-hot-toast'
-import '../../styles/LoginPage.css'
-const LoginPage = ({role}) => {
+import { clearuser, saveuser } from '../../redux/features/userSlice';
+import { axiosInstance } from '../../config/axiosInstance';
+import { toast } from 'react-hot-toast';
+
+const LoginPage = ({ role }) => {
   const { register, handleSubmit, formState: { errors }, getValues } = useForm();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const [loginError, setLoginError] = useState(null);  // Reintroduce loginError state
+  const dispatch = useDispatch();
+  const [loginError, setLoginError] = useState(null);
 
   const user = {
     role: "user",
@@ -18,125 +18,134 @@ const LoginPage = ({role}) => {
     profileRoute: "/user/profile",
     signupRoute: "/signup"
   };
-  if(role=="owner"){
-    user.role="owner";
-    user.loginAPI="/owner/login";
-    user.profileRoute="/owner/profile";
-    user.signupRoute="/owner/signup"
-}
-if(role=="admin"){
-  user.role="admin";
-  user.loginAPI="/admin/login";
-  user.profileRoute="/admin/profile";
-  user.signupRoute="/admin/signup"
-}
+
+  if (role === "owner") {
+    user.role = "owner";
+    user.loginAPI = "/owner/login";
+    user.profileRoute = "/owner/profile";
+    user.signupRoute = "/owner/signup";
+  } else if (role === "admin") {
+    user.role = "admin";
+    user.loginAPI = "/admin/login";
+    user.profileRoute = "/admin/profile";
+    user.signupRoute = "/admin/signup";
+  }
 
   const onSubmit = async (data) => {
-    
-   try {
-      const response = await axiosInstance({
-        method: "PUT",
-        url: user.loginAPI,  // Keeping PUT as per your backend setup
-        data: data,
-      });
-      console.log("response====", response);
-      dispatch(saveuser(response?.data?.data))
+    try {
+      const response = await axiosInstance.put(user.loginAPI, data);
+      dispatch(saveuser(response?.data?.data));
      
-      toast.success("Login successful! Welcome back!", {
-        position: "top-right",  // Correct position usage as a string
-        duration: 5000,  // Duration for which toast will be displayed
-      });
-
+     toast.success("Login successful! Welcome back.");
       navigate(user.profileRoute);
     } catch (error) {
       dispatch(clearuser());
-      console.error("Error during login:", error);
-      setLoginError('An error occurred during login. Please try again.'); 
-      
-      // Trigger the error toast
-      toast.error("Login failed. Please check your credentials and try again.", {
-        position: "top-right",  // Correct position usage as a string
-        duration: 5000,  // Duration for which toast will be displayed
-      });
+      setLoginError('Login failed. Please check your credentials.');
+      toast.error("Login failed. Please check your credentials.");
     }
   };
 
   return (
-    <div className="login-wrapper">
-      <div className="login-container">
-        <div className="card-body">
-          <h2 className="text 5xl font-bold">Login now! {user.role}</h2>
-  
-          <form onSubmit={handleSubmit(onSubmit)} className="login-form">
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email">Email</label>
+    <div
+      className="position-relative w-100 vh-100"
+      style={{
+        backgroundColor: '#0D1B2A',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center p-4">
+        <div
+          className="bg-dark bg-opacity-75 p-4 text-white"
+          style={{ maxWidth: "500px", borderRadius: "10px", width: "100%" }}
+        >
+          <h3 className="mt-3">Login to Your {user.role} Account</h3>
+          <p className="text-white-50 mb-4">Please enter your credentials</p>
+
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* Email */}
+            <div className="mb-3 text-start">
               <input
                 type="email"
-                id="email"
-                placeholder="Enter your email"
-                {...register('email', {
-                  required: 'Email is required',
+                placeholder="Email"
+                {...register("email", {
+                  required: "Email is required",
                   pattern: {
-                    value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                    message: 'Invalid email address'
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email format"
                   }
                 })}
+                className="form-control bg-dark text-white border-secondary"
               />
-              {errors.email && <p>{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-danger mt-1">{errors.email.message}</p>
+              )}
             </div>
-  
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password">Password</label>
+
+            {/* Password */}
+            <div className="mb-3 text-start">
               <input
                 type="password"
-                id="password"
-                placeholder="Enter your password"
-                {...register('password', {
-                  required: 'Password is required',
+                placeholder="Password"
+                {...register("password", {
+                  required: "Password is required",
                   minLength: {
                     value: 6,
-                    message: 'Password must be at least 6 characters long'
+                    message: "Password must be at least 6 characters"
                   }
                 })}
+                className="form-control bg-dark text-white border-secondary"
               />
-              {errors.password && <p>{errors.password.message}</p>}
+              {errors.password && (
+                <p className="text-danger mt-1">{errors.password.message}</p>
+              )}
             </div>
-  
-            {/* Confirm Password Field */}
-            <div>
-              <label htmlFor="confirmPassword">Confirm Password</label>
+
+            {/* Confirm Password */}
+            <div className="mb-3 text-start">
               <input
                 type="password"
-                id="confirmPassword"
-                placeholder="Confirm your password"
-                {...register('confirmPassword', {
-                  required: 'Confirm Password is required',
-                  validate: value => value === getValues('password') || 'Passwords do not match',
+                placeholder="Confirm Password"
+                {...register("confirmPassword", {
+                  required: "Confirm Password is required",
+                  validate: value => value === getValues('password') || "Passwords do not match",
                   minLength: {
                     value: 6,
-                    message: 'Password must be at least 6 characters long'
+                    message: "Password must be at least 6 characters"
                   }
                 })}
+                className="form-control bg-dark text-white border-secondary"
               />
-              {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+              {errors.confirmPassword && (
+                <p className="text-danger mt-1">{errors.confirmPassword.message}</p>
+              )}
             </div>
-  
-            {/* Submit Button */}
-            <div>
-              <button type="submit">Login</button>
-            </div>
+
+            {/* Login Button */}
+            <button type="submit" className="btn btn-warning w-100">
+              Login
+            </button>
+
+            {/* Error Message */}
+            {loginError && <p className="text-danger mt-3">{loginError}</p>}
+
+            {/* Links */}
+            <p className="text-white mt-3 mb-1">
+              <Link to="/forgot-password" className="text-warning fw-bold">
+                Forgot Password?
+              </Link>
+            </p>
+            <p className="text-white">
+              New here?{" "}
+              <Link to={user.signupRoute} className="text-warning fw-bold">
+                Sign Up
+              </Link>
+            </p>
           </form>
-  
-          {/* Forgot Password and New User Links */}
-          <div className="links">
-            <Link to="/forgot-password">Forgot Password?</Link>
-            <br />
-            <Link to={user.signupRoute}>New User? Sign Up</Link>
-          </div>
         </div>
       </div>
-    </div> 
-  )}
-  export default LoginPage
+    </div>
+  );
+};
+
+export default LoginPage;

@@ -3,14 +3,13 @@ import { Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
-import {axiosInstance} from "../../config/axiosInstance";
-
+import { axiosInstance } from "../../config/axiosInstance";
 
 const ForgotPassword = () => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [error, setError] = useState("");
   const [role, setRole] = useState("user");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const validateInput = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,13 +26,14 @@ const ForgotPassword = () => {
     setError("");
 
     try {
-        // console.log("id===",emailOrPhone)
-      await axiosInstance.post(`/forgot-password/${role}`,{ email: emailOrPhone });
+      await axiosInstance.post(`/forgot-password/${role}`, {
+        email: emailOrPhone,
+      });
       toast.success("Password reset link sent. Check your inbox or SMS.");
       setEmailOrPhone("");
       setTimeout(() => {
         navigate("/login");
-      }, 2000); 
+      }, 2000);
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to send reset link."
@@ -47,15 +47,14 @@ const ForgotPassword = () => {
       style={{
         backgroundSize: "cover",
         backgroundPosition: "center",
-      }}>
+      }}
+    >
       <div className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center p-4">
         <div
           className="bg-dark bg-opacity-75 p-4"
-          style={{ maxWidth: "500px", borderRadius: "10px" }}>
-          <h1 className="text-danger fw-bold">
-            STAR<span className="text-light">LIGHT</span>
-          </h1>
-          <h3 className="text-white mt-3">Reset Your Password</h3>
+          style={{ maxWidth: "500px", borderRadius: "10px" }}
+        >
+          <h3 className="text-white mt-2">Reset Your Password</h3>
           <p className="text-white-50 mb-4">
             Enter your registered email or phone number
           </p>
@@ -71,24 +70,26 @@ const ForgotPassword = () => {
               />
               {error && <p className="text-danger mt-1">{error}</p>}
             </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Select
                 className="bg-dark text-white border-secondary"
                 value={role}
-                onChange={(e) => setRole(e.target.value)}>
+                onChange={(e) => setRole(e.target.value)}
+              >
                 <option value="user">User</option>
                 <option value="theater">Theater Owner</option>
-                <option value="admin">admin</option>
+                <option value="admin">Admin</option>
               </Form.Select>
             </Form.Group>
 
-            <Button variant="danger" type="submit" className="w-100">
+            <Button variant="warning" type="submit" className="w-100 fw-bold">
               Send Reset Link
             </Button>
 
             <p className="text-white mt-3">
               Remembered your password?{" "}
-              <Link to="/login" className="text-danger fw-bold">
+              <Link to="/login" className="text-warning fw-bold">
                 Go back to Login
               </Link>
             </p>

@@ -3,7 +3,6 @@ import React from 'react';
 import 'antd/dist/reset.css'; // Import Ant Design styles
 import {RootLayout} from './layout/RootLayout'
 import {LandingPage} from './pages/LandingPage'
-import UserHeader from './components/user/UserHeader';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {

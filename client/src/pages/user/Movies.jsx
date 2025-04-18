@@ -8,8 +8,8 @@ const Movies = () => {
   // While loading, show skeleton components
   if (isLoading) {
     return (
-      <div>
-        <h1>Movie Listing Page</h1>
+      <div >
+        
         {/* Display skeleton placeholders for the movie cards */}
         <div className="movie-cards-container">
           {[...Array(6)].map((_, index) => (
@@ -22,8 +22,8 @@ const Movies = () => {
 
   // Once the movies are loaded, show the actual movie cards
   return (
-    <div>
-      <h5>Movie Listing Page</h5>
+    <div >
+     
       <div className="movie-cards-container">
         {getAllMovies?.map((movie) => (
           <MovieCard movie={movie} key={movie?.id} />

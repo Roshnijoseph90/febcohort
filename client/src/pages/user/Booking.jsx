@@ -143,7 +143,12 @@ const Booking = () => {
 
     try {
       setIsBooking(true);
-
+      console.log("User from Redux:", user); 
+      if (!user || !user._id) {
+        toast.error("User not logged in. Please log in to book.");
+        return;
+      }
+      
       const response = await axiosInstance.post("/booking/create-booking", {
         userId: user._id,
         showId: selectedShow._id,
@@ -160,12 +165,10 @@ const Booking = () => {
       if (response.data) {
         toast.success("Redirecting to payment...");
         setTimeout(() => {
-          navigate(`/user/payment/${_id}`);
-          console.log("Booking response:", response.data);
-
+          navigate(`/user/payment/${id}`);
+          console.log
         }, 2000);
       }
-    } catch (err) {
       console.log("booking failed error",err)
       toast.error(err?.response?.data?.message || "Booking failed.");
       

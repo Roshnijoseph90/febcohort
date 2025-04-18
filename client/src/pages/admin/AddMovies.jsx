@@ -7,10 +7,8 @@ import{toast} from "react-hot-toast"
 const AddMovie = () => {
   const navigate = useNavigate();
   const posterInputRef = useRef(null);
-
-  // ✅ Get admin from Redux (safe selector)
   const admin = useSelector((state) => state.user.userData);
-  //console.log("🧠 Redux admin (userData):", admin)
+
 const adminId = admin?.id||admin?._id;;
 
   const [files, setFiles] = useState({ poster: null });
