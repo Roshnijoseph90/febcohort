@@ -3,8 +3,7 @@ import { Layout, Menu, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import DarkMode from '../../pages/Shared/DarkMode';
-//import '../../styles/Header.css'
-// This is destructured from Ant Design
+
 const { Header: AntLayoutHeader } = Layout;
 
 const Header = () => {
@@ -62,18 +61,13 @@ const Header = () => {
         <Menu.Item key="2">
           <Link to="/movies">Movies</Link>
         </Menu.Item>
-        <Menu.Item key="3">
-          <Link to="/search">
-            <SearchOutlined />
-            Search
-          </Link>
-        </Menu.Item>
+        
         {isAuthenticated ? (
           <>
-            <Menu.Item key="4">
+            <Menu.Item key="3">
               <Link to="/profile">Profile</Link>
             </Menu.Item>
-            <Menu.Item key="5">
+            <Menu.Item key="4">
               <Button type="link" onClick={handleLogout}>
                 Logout
               </Button>
@@ -81,10 +75,10 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Menu.Item key="6">
+            <Menu.Item key="5">
               <Link to="/login">Login</Link>
             </Menu.Item>
-            <Menu.Item key="7">
+            <Menu.Item key="6">
               <Link to="/signup">Sign Up</Link>
             </Menu.Item>
           </>

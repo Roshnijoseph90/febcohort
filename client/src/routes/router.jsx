@@ -13,7 +13,6 @@ import ProtectRoute from './ProtectRoute';
 import RootLayout from '../layout/RootLayout';
 import Movies from '../pages/user/Movies';
 import Logout from '../pages/user/Logout';
-import Search from '../pages/user/Search';
 import MoviesDetails from '../pages/user/MoviesDetails';
 import Showtimes from '../pages/user/Showtimes';
 import OwnerLayout from '../layout/ownerLayout';
@@ -94,10 +93,7 @@ export const router = createBrowserRouter([
         path: "/forgot-password",  
         element: <ForgotPassword />,  
       },
-      {
-        path: "/search",  
-        element: <Search />,  
-      },
+      
       {
         path: "*",
         element: <ErrorPage home='/' />, 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
-import { axiosInstance } from '../../config/axiosInstance';
+
+
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();

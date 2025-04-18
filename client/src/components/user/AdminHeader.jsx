@@ -29,14 +29,12 @@ const AdminHeader = () => {
         <Menu.Item key="2">
           <Link to="/movies">Movies</Link>
         </Menu.Item>
+        
         <Menu.Item key="3">
-          <Link to="/search">Search</Link>
-        </Menu.Item>
-        <Menu.Item key="4">
           <Link to="/admin/addmovies">Add Movies</Link>
         </Menu.Item>
         {/* Profile icon and logout button */}
-        <Menu.Item key="5" style={{ padding: '0 10px' }}>
+        <Menu.Item key="4" style={{ padding: '0 10px' }}>
           <Link to="/profile">
             {/* Avatar with user icon */}
             <Avatar icon={<UserOutlined />} style={{ backgroundColor: '#87d068' }} />
