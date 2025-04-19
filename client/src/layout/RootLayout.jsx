@@ -22,11 +22,11 @@ export const RootLayout = () => {
        
       });
       console.log(response,"===checkuser response")
-     dispatch(saveuser())  
+     //dispatch(saveuser())  
      setIsLoading(false)
     }catch(error) {
       console.log("Error:", error);
-      dispatch(clearuser());
+     // dispatch(clearuser());
       setIsLoading(false)
     }
   };

@@ -24,6 +24,7 @@ const Booking = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.userData);
+  
   const [shows, setShows] = useState([]);
   const [filteredShows, setFilteredShows] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
