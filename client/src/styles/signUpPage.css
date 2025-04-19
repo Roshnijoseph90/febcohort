@@ -98,3 +98,11 @@
   text-align: center;
   margin-top: 10px;
 }
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+input {
+  color: white;
+}
+

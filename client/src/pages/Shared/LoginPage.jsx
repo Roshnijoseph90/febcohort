@@ -64,6 +64,9 @@ const LoginPage = ({ role }) => {
 
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Email */}
+            <p className="text-white-50 mb-4">
+           Enter your Email</p>
+            <div className="mb-3 text-start"></div>
             <div className="mb-3 text-start">
               <input
                 type="email"
@@ -83,6 +86,9 @@ const LoginPage = ({ role }) => {
             </div>
 
             {/* Password */}
+            <p className="text-white-50 mb-4">
+           Password</p>
+            <div className="mb-3 text-start"></div>
             <div className="mb-3 text-start">
               <input
                 type="password"
@@ -102,6 +108,9 @@ const LoginPage = ({ role }) => {
             </div>
 
             {/* Confirm Password */}
+            <p className="text-white-50 mb-4">
+           Confrom Password</p>
+            <div className="mb-3 text-start"></div>
             <div className="mb-3 text-start">
               <input
                 type="password"
