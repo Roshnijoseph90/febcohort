@@ -36,9 +36,9 @@ const calculateBookingAmount = (seatType, isPremium, seatsBooked) => {
 // Controller to create a booking
 export const createBooking = async (req, res) => {
   try {
-    const { userId, showId, movieId, selectedSeats, theaterId, date,timeSlot, isPremium, status } = req.body;
+    const { userId, showId, selectedSeats, theaterId, date,timeSlot, isPremium, status } = req.body;
 
-    if (!userId || !showId || !selectedSeats||!Array.isArray(selectedSeats) || selectedSeats.length === 0 || !movieId || !theaterId || !date||!timeSlot) {
+    if (!userId || !showId || !selectedSeats||!Array.isArray(selectedSeats) || selectedSeats.length === 0 ||  !theaterId || !date||!timeSlot) {
       return res.status(400).json({ message: 'Missing required booking fields' });
     }
 
@@ -48,7 +48,6 @@ export const createBooking = async (req, res) => {
       !showId ||
       !Array.isArray(selectedSeats) ||
       selectedSeats.length === 0 ||
-      !movieId ||
       !theaterId ||
       !date||
       !timeSlot
