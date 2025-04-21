@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useParams, useNavigate } from "react-router";
@@ -252,7 +251,7 @@ const Booking = () => {
               <div className="overlay">
                 <h2 className="movie-title">{selectedShow.movie?.title || "Movie"}</h2>
                 <h4 className="text-light">
-                  {selectedShow.theaterId.name} - {selectedShow.theaterId.location}
+                  {selectedShow.theaterId?.name} - {selectedShow.theaterId?.location}
                 </h4>
               </div>
             </div>

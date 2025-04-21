@@ -66,11 +66,6 @@ export const createBooking = async (req, res) => {
     // Calculate amount
     const { pricePerTicket, totalAmount } = calculateBookingAmount(seatType, isPremium, bookedSeatsCount);
 
-    // 📅 Split date and time
-    /*const fullDateTime = new Date(dateTime);
-    const date = fullDateTime.toISOString().split('T')[0];
-    const timeSlot = fullDateTime.toISOString().split('T')[1].split('.')[0]; // HH:MM:SS*/
-
     // Create the booking
     const booking = new Booking({
       userId,
@@ -118,6 +113,19 @@ export const getBookingsByUser = async (req, res) => {
  
   }
 }
+// ✅ Controller to get booking by bookingId
+export const getBookingById = async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.bookingId);
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+    res.status(200).json({data:booking,message:"sucessfully get booking by bookindId"});
+  } catch (error) {
+    console.error("Error fetching booking by ID:", error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
 
 
 // Controller to cancel a booking

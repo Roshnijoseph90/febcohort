@@ -1,5 +1,5 @@
 import express from 'express';
-import {createBooking, getAllBookings,getBookingsByUser,updateBooking,cancelBooking}  from '../controllers/bookingController.js';
+import {createBooking,getBookingById, getAllBookings,getBookingsByUser,updateBooking,cancelBooking}  from '../controllers/bookingController.js';
 import { authAdmin } from '../middlewares/authAdmin.js';
 import { authOwner } from '../middlewares/authOwner.js';
 import { authUser } from '../middlewares/authUser.js';
@@ -13,7 +13,8 @@ router.get('/get-all-booking', authAdmin,getAllBookings);
 
 // Route to get bookings by a specific user
 router.get('/get-booking-byId/:userId', authUser,getBookingsByUser);
-
+// Route to get booking by id
+router.get('/get-booking-by-bookingId/:bookingId', authUser, getBookingById);
 // Route to update booking status (e.g., from pending to confirmed or cancelled)
 router.put('/update-booking/:bookingId',authUser, updateBooking);
 

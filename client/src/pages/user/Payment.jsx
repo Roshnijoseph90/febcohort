@@ -20,7 +20,7 @@ const Payment = () => {
 
     const fetchBookingDetails = async () => {
       try {
-        const response = await axiosInstance.get(`/bookings/${bookingId}`);
+        const response = await axiosInstance.get(`/booking/get-booking-by-bookingId/${bookingId}`);
         setBooking(response.data.booking);
       } catch (error) {
         alert("Failed to fetch booking details!");
