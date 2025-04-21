@@ -1,5 +1,4 @@
 
-
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useParams, useNavigate } from "react-router";
@@ -176,7 +175,8 @@ const Booking = () => {
     } finally {
       setIsBooking(false);
     }
-  };
+  }
+
 
   const totalAmount = price.reduce((sum, p) => sum + p, 0);
 
