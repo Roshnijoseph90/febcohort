@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useParams, useNavigate } from "react-router";
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 import {
   Container,
   Button,
@@ -22,7 +22,7 @@ const Booking = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.userData);
-  
+
   const [shows, setShows] = useState([]);
   const [filteredShows, setFilteredShows] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -39,12 +39,16 @@ const Booking = () => {
       try {
         const response = await axiosInstance.get(`shows/get-shows-bymovie/${id}`);
         if (response.data.shows.length > 0) {
-          setShows(response.data.shows);
+          const validShows = response.data.shows.filter(show => show.theaterId);
+          setShows(validShows);
           const today = new Date().toISOString().split("T")[0];
           setSelectedDate(today + "T00:00:00.000Z");
+        } else {
+          toast.error("No shows available for this movie.");
         }
       } catch (error) {
         console.error("Error fetching shows:", error);
+        toast.error("Error fetching show details.");
       }
     };
     fetchShowDetails();
@@ -67,30 +71,31 @@ const Booking = () => {
     ...new Set(
       filteredShows
         .filter((show) =>
-          selectedLocation ? show.theaterId.location === selectedLocation : true
+          selectedLocation ? show.theaterId?.location === selectedLocation : true
         )
         .map((show) => {
           const time = new Date(show.showTime);
           return time.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
+            hour: "2-digit",
+            minute: "2-digit",
             hour12: true,
           });
-}),
+        })
     ),
   ];
 
   const handleTimeClick = (timeStr) => {
     setSelectedTime(timeStr);
     const matchingShow = filteredShows.find((show) => {
-      const showTime = new Date(show.showTime);
-      //return showTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }); 
-      const formatted = showTime.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
+      const showTime = new Date(show.showTime).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
         hour12: true,
       });
-      return formatted === timeStr && (selectedLocation ? show.theaterId.location === selectedLocation : true);
+      return (
+        showTime === timeStr &&
+        (selectedLocation ? show.theaterId?.location === selectedLocation : true)
+      );
     });
 
     setSelectedShow(matchingShow || null);
@@ -123,8 +128,7 @@ const Booking = () => {
         return [...prevSeats, { seatId, seatLabel, seatType, price: seatPrice }];
       }
     });
-  }
-  
+  };
 
   const handleBooking = async () => {
     if (!selectedShow || selectedSeats.length === 0) {
@@ -133,7 +137,6 @@ const Booking = () => {
     }
 
     const totalAmount = selectedSeats.reduce((sum, s) => sum + s.price, 0);
-    const formattedDate = selectedDate;
     const seatDetails = selectedSeats.map((s) => ({
       seatId: s.seatId,
       seatLabel: s.seatLabel,
@@ -142,40 +145,37 @@ const Booking = () => {
 
     try {
       setIsBooking(true);
-      console.log("User from Redux:", user); 
       if (!user || !user._id) {
         toast.error("User not logged in. Please log in to book.");
         return;
       }
-      
+
       const response = await axiosInstance.post("/booking/create-booking", {
         userId: user._id,
         showId: selectedShow._id,
-        theaterId: selectedShow.theaterId._id,
+        theaterId: selectedShow.theaterId?._id,
         bookedSeatsCount: selectedSeats.length,
         totalAmount,
         selectedSeats: seatDetails,
         date: selectedDate.split("T")[0],
         timeSlot: selectedTime.length === 5 ? selectedTime + ":00" : selectedTime,
         isPremium: selectedShow.isPremium || false,
-       status: "confirmed"
+        status: "confirmed",
       });
 
       if (response.data) {
         toast.success("Redirecting to payment...");
         setTimeout(() => {
           navigate(`/user/payment/${id}`);
-          console.log
         }, 2000);
       }
-      console.log("booking failed error",err)
+    } catch (err) {
+      console.error("Booking failed error:", err);
       toast.error(err?.response?.data?.message || "Booking failed.");
-      
     } finally {
       setIsBooking(false);
     }
-  }
-
+  };
 
   const totalAmount = price.reduce((sum, p) => sum + p, 0);
 
@@ -188,15 +188,18 @@ const Booking = () => {
             <FormControl
               as="select"
               value={selectedLocation}
-              onChange={handleLocationChange}>
+              onChange={handleLocationChange}
+            >
               <option value="">All Locations</option>
-              {[...new Set(filteredShows.map((s) => s.theaterId.location))].map(
-                (loc, i) => (
-                  <option value={loc} key={i}>
-                    {loc}
-                  </option>
-                )
-              )}
+              {[...new Set(
+                filteredShows
+                  .filter((s) => s.theaterId?.location)
+                  .map((s) => s.theaterId.location)
+              )].map((loc, i) => (
+                <option value={loc} key={i}>
+                  {loc}
+                </option>
+              ))}
             </FormControl>
           </FormGroup>
         )}
@@ -206,7 +209,8 @@ const Booking = () => {
           spaceBetween={2}
           freeMode={true}
           modules={[FreeMode]}
-          className="date-swiper half-width">
+          className="date-swiper half-width"
+        >
           {[...Array(7)].map((_, index) => {
             const currentDate = new Date();
             currentDate.setDate(currentDate.getDate() + index);
@@ -219,9 +223,8 @@ const Booking = () => {
                       ? "warning"
                       : "outline-light"
                   }
-                  onClick={() =>
-                    setSelectedDate(formatted + "T00:00:00.000Z")
-                  }>
+                  onClick={() => setSelectedDate(formatted + "T00:00:00.000Z")}
+                >
                   <strong>
                     {currentDate.toLocaleString("en-US", { weekday: "short" })}
                   </strong>
@@ -239,7 +242,8 @@ const Booking = () => {
             <Button
               key={i}
               variant={selectedTime === time ? "warning" : "outline-warning"}
-              onClick={() => handleTimeClick(time)}>
+              onClick={() => handleTimeClick(time)}
+            >
               {time}
             </Button>
           ))}
@@ -257,9 +261,18 @@ const Booking = () => {
             </div>
 
             <div className="seat-color-icons text-white d-flex justify-content-around align-items-center">
-              <p><span className="bg-warning me-2" style={{ width: 15, height: 15, display: "inline-block" }}></span>Selected</p>
-              <p><span className="bg-success me-2" style={{ width: 15, height: 15, display: "inline-block" }}></span>Available</p>
-              <p><span className="bg-secondary me-2" style={{ width: 15, height: 15, display: "inline-block" }}></span>Booked</p>
+              <p>
+                <span className="bg-warning me-2" style={{ width: 15, height: 15, display: "inline-block" }}></span>
+                Selected
+              </p>
+              <p>
+                <span className="bg-success me-2" style={{ width: 15, height: 15, display: "inline-block" }}></span>
+                Available
+              </p>
+              <p>
+                <span className="bg-secondary me-2" style={{ width: 15, height: 15, display: "inline-block" }}></span>
+                Booked
+              </p>
             </div>
 
             <div className="seat-layout mt-4">
@@ -360,7 +373,5 @@ const Booking = () => {
     </div>
   );
 };
-
-
 
 export default Booking;

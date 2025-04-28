@@ -21,10 +21,7 @@ const ownerSchema = new mongoose.Schema({
    
   },
   
-  /*theaters: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Theater',  // Reference to the Theater model
-  }],*/
+  
   role:{
     type:String,
     required:true,
@@ -52,7 +49,5 @@ const ownerSchema = new mongoose.Schema({
 });
 
 
-//export const User = mongoose.model('User', userSchema); 
 
-//module.exports = User
 export const Owner = mongoose.model('Owner', ownerSchema);

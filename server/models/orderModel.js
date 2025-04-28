@@ -1,9 +1,4 @@
-//sessionId
-//userId
-//showId or moviesId
-//payment status
-//booking status
-//priceDetails
+
 
 
 import mongoose from 'mongoose';

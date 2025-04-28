@@ -4,7 +4,7 @@ const movieSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    // trim: true, // Trims any extra spaces
+    
   },
   description: {
     type: String,
