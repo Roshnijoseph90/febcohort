@@ -2,7 +2,10 @@ import mongoose from 'mongoose';
 
 // Define the schema for Booking
 const bookingSchema = new mongoose.Schema({
-  
+  /*movieId:{
+     type: mongoose.Schema.Types.ObjectId,
+      ref: 'Movie', required: true 
+  },*/
   showId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Show', // Reference to the Show model

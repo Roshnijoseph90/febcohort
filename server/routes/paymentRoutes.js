@@ -3,7 +3,7 @@ const router = express.Router();
 import { authUser } from '../middlewares/authUser.js';
 const client_domain = process.env.CLIENT_DOMAIN;
 import Stripe from 'stripe';
-const stripe = new Stripe('sk_test_...'); 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 router.post('/create-checkout-session', authUser, async (req, res, next) => {
     try {
         const { products } = req.body;
@@ -13,9 +13,9 @@ router.post('/create-checkout-session', authUser, async (req, res, next) => {
             price_data: {
                 currency: "inr",
                 product_data: {
-                    name: product?.movieId?.name, 
+                    name: product?.name || "Movie Ticket",
                 },
-                unit_amount: Math.round(product?.movieId?.price * 100), 
+                unit_amount: Math.round(product?.price * 100), 
             },
             quantity: 1,
         }));
@@ -26,6 +26,15 @@ router.post('/create-checkout-session', authUser, async (req, res, next) => {
             mode: "payment",
             success_url: `${client_domain}/user/payment/success`,  
             cancel_url: `${client_domain}/user/payment/cancel`,
+            metadata: {
+                showId: products[0]?.showId,
+                theaterId: products[0]?.theaterId,
+                selectedSeats: JSON.stringify(products[0]?.selectedSeats),
+                date: products[0]?.date,
+                timeSlot: products[0]?.timeSlot,
+                userId: products[0]?.userId,
+              },
+                
         });
 
         res.json({ success: true, sessionId: session.id });

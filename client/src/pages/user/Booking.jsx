@@ -41,8 +41,8 @@ const Booking = () => {
         if (response.data.shows.length > 0) {
           const validShows = response.data.shows.filter(show => show.theaterId);
           setShows(validShows);
-          const today = new Date().toISOString().split("T")[0];
-          setSelectedDate(today + "T00:00:00.000Z");
+          const today = new Date().toLocaleDateString("en-CA")
+          setSelectedDate(today);
         } else {
           toast.error("No shows available for this movie.");
         }
@@ -56,9 +56,15 @@ const Booking = () => {
 
   useEffect(() => {
     if (!selectedDate) return;
+    const selectedDateTimestamp = new Date(selectedDate).toISOString().split('T')[0];
     const filtered = shows.filter((show) => {
-      const showDate = new Date(show.showTime).toISOString().split("T")[0];
-      return showDate === selectedDate.split("T")[0];
+      const showDateTimestamp = new Date(show.showTime).toISOString().split('T')[0]; 
+      //const showDate = new Date(show.showTime).toLocaleDateString("en-CA")
+      console.log("Selected Date:", selectedDateTimestamp);  // Log the selected date
+    console.log("Show Date:", showDateTimestamp);  // Log the show date for debugging
+
+    return showDateTimestamp === selectedDateTimestamp;  // Comp
+      //return showDate === selectedDate;
     });
     setFilteredShows(filtered);
     setSelectedShow(null);
@@ -75,11 +81,7 @@ const Booking = () => {
         )
         .map((show) => {
           const time = new Date(show.showTime);
-          return time.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          });
+          return time.toTimeString().split(" ")[0]; // HH:MM:SS
         })
     ),
   ];
@@ -87,17 +89,12 @@ const Booking = () => {
   const handleTimeClick = (timeStr) => {
     setSelectedTime(timeStr);
     const matchingShow = filteredShows.find((show) => {
-      const showTime = new Date(show.showTime).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
+      const showTime = new Date(show.showTime).toTimeString().split(" ")[0];
       return (
         showTime === timeStr &&
         (selectedLocation ? show.theaterId?.location === selectedLocation : true)
       );
     });
-
     setSelectedShow(matchingShow || null);
     setSelectedSeats([]);
     setPrice([]);
@@ -157,8 +154,8 @@ const Booking = () => {
         bookedSeatsCount: selectedSeats.length,
         totalAmount,
         selectedSeats: seatDetails,
-        date: selectedDate.split("T")[0],
-        timeSlot: selectedTime.length === 5 ? selectedTime + ":00" : selectedTime,
+        date: selectedDate, // already in YYYY-MM-DD format
+        timeSlot: selectedTime.length === 5 ? selectedTime + ":00" : selectedTime, // ensure HH:mm:ss
         isPremium: selectedShow.isPremium || false,
         status: "confirmed",
       });
@@ -166,7 +163,8 @@ const Booking = () => {
       if (response.data) {
         toast.success("Redirecting to payment...");
         setTimeout(() => {
-          navigate(`/user/payment/${id}`);
+          //navigate(`/user/payment/${id}`);
+          navigate(`/user/payment/${response.data.booking._id}`);
         }, 2000);
       }
     } catch (err) {
@@ -218,12 +216,8 @@ const Booking = () => {
             return (
               <SwiperSlide key={index}>
                 <Button
-                  variant={
-                    selectedDate === formatted + "T00:00:00.000Z"
-                      ? "warning"
-                      : "outline-light"
-                  }
-                  onClick={() => setSelectedDate(formatted + "T00:00:00.000Z")}
+                  variant={selectedDate === formatted ? "warning" : "outline-light"}
+                  onClick={() => setSelectedDate(formatted)}
                 >
                   <strong>
                     {currentDate.toLocaleString("en-US", { weekday: "short" })}

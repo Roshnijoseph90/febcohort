@@ -36,7 +36,7 @@ const calculateBookingAmount = (seatType, isPremium, seatsBooked) => {
 // Controller to create a booking
 export const createBooking = async (req, res) => {
   try {
-    const { userId, showId, selectedSeats, theaterId, date,timeSlot, isPremium, status } = req.body;
+    const { userId,showId, selectedSeats, theaterId, date,timeSlot, isPremium, status } = req.body;
 
     if (!userId || !showId || !selectedSeats||!Array.isArray(selectedSeats) || selectedSeats.length === 0 ||  !theaterId || !date||!timeSlot) {
       return res.status(400).json({ message: 'Missing required booking fields' });
@@ -69,6 +69,7 @@ export const createBooking = async (req, res) => {
     // Create the booking
     const booking = new Booking({
       userId,
+     
       showId,
       theaterId,
       selectedSeats,
@@ -120,6 +121,11 @@ export const getBookingById = async (req, res) => {
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
     }
+    /*const bookingWithMovie = {
+      ...booking.toObject(),
+      movieName: booking.movieId?.title || 'Unknown Movie',
+      
+    };*/
     res.status(200).json({data:booking,message:"sucessfully get booking by bookindId"});
   } catch (error) {
     console.error("Error fetching booking by ID:", error);

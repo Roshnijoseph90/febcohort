@@ -5,6 +5,7 @@ import { Card, Button } from "react-bootstrap"; // Import Bootstrap Components
 import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import toast from "react-hot-toast";
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const Payment = () => {
   const [loading, setLoading] = useState(false);
@@ -13,15 +14,18 @@ const Payment = () => {
   const navigate = useNavigate();
 
   // Load Stripe
-  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-
+  //const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+  //console.log(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
   useEffect(() => {
     if (!bookingId) return;
 
     const fetchBookingDetails = async () => {
       try {
         const response = await axiosInstance.get(`/booking/get-booking-by-bookingId/${bookingId}`);
-        setBooking(response.data.booking);
+        console.log("Booking ID from URL:", bookingId);
+        console.log("Fetched Booking:", response.data); // for debug
+      setBooking(response.data.data); 
+        //setBooking(response.data.booking);
       } catch (error) {
         alert("Failed to fetch booking details!");
       }
@@ -44,7 +48,8 @@ const Payment = () => {
       const { data } = await axiosInstance.post("/payment/create-checkout-session", {
         products: [
           {
-            movieId: booking.movieId,
+            //movieId: booking.movieId,
+            name:"Movie Ticket",
             price: booking.totalAmount,
             showId: booking.showId,
             theaterId: booking.theaterId,
@@ -55,7 +60,7 @@ const Payment = () => {
           },
         ],
       });
-
+      console.log("Stripe session response:", data);
       // Check if sessionId was returned
       if (data.sessionId) {
         // Redirect to Stripe Checkout

@@ -1,5 +1,6 @@
 
 import {Theater}from '../models/theaterModel.js'; // Import the Theater model
+import {Show} from '../models/showsModel.js'
 import moment from 'moment';
 
 
@@ -93,8 +94,20 @@ export const deleteTheater = async (req, res) => {
     if (!deletedTheater) {
       return res.status(404).json({ error: 'Theater not found' });
     }
+    
+ // Delete all shows that reference this theater
+ await Show.deleteMany({ theaterId });
+ const orphanedShows = await Show.find({ theaterId: { $exists: true } })
+      .populate('theaterId')
+      .then(shows => shows.filter(show => !show.theaterId));
 
-    res.status(200).json({data:deletedTheater, message: 'Theater deleted successfully'});
+    if (orphanedShows.length > 0) {
+      await Show.deleteMany({ _id: { $in: orphanedShows.map(s => s._id) } });
+      console.log(`Cleaned up ${orphanedShows.length} orphaned show(s)`);
+    }
+    
+ 
+ res.status(200).json({data:deletedTheater, message: 'Theater deleted successfully'});
   } catch (error) {
     res.status(error.statusCode || 500).json({ message: error.message || 'Internal server error' });
   }

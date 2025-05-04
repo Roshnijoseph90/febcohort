@@ -72,7 +72,7 @@ export const createShow = async (req, res) => {
       showTime,
       availableSeats,
       price,
-      //seats, // Add the seat details directly to the seats array
+      seats, // Add the seat details directly to the seats array
       seatTypes,
     });
 
