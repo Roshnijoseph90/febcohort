@@ -1,6 +1,4 @@
 
-
-
 import mongoose from 'mongoose';
 
 // Define the schema for Booking
@@ -27,15 +25,15 @@ const orderSchema = new mongoose.Schema({
   },
   isPremium: {
     type: Boolean,
-    required: true,  // Whether the user chose a premium seat or not
+    required: true, 
   },
   price: {
     type: Number,
-    required: true,  // The price for the selected ticket type (base or premium)
+    required: true,  
   },
   totalAmount: {
     type: Number,
-    required: true,  // The total amount for the booking (seats * price)
+    required: true,  
   },
   bookingStatus: {
     type: String,

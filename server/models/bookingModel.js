@@ -13,7 +13,7 @@ const bookingSchema = new mongoose.Schema({
   },
   theaterId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Theater', // Reference to the Theater model
+    ref: 'Theater', 
     required: true,
   },
   bookedSeatsCount: {
@@ -24,12 +24,12 @@ const bookingSchema = new mongoose.Schema({
     {
       seatId: { type: String, required: true },
       seatLabel: { type: String, required: true },
-      seatType: { type: String, required: true }, // Standard, VIP, etc.
+      seatType: { type: String, required: true }, 
     },
   ],
   totalAmount: {
     type: Number,
-    required: true, // Store the total amount of the booking
+    required: true, 
   },
   date: {
     type: Date,

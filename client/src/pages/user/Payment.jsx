@@ -46,8 +46,10 @@ const Payment = () => {
 
       // Send booking details to backend to create the Stripe Checkout session
       const { data } = await axiosInstance.post("/payment/create-checkout-session", {
+        bookingId: booking._id,
         products: [
           {
+           
             //movieId: booking.movieId,
             name:"Movie Ticket",
             price: booking.totalAmount,

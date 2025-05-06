@@ -42,7 +42,7 @@ export const createBooking = async (req, res) => {
       return res.status(400).json({ message: 'Missing required booking fields' });
     }
 
-    // Check if user, show, movie, and theater exist
+    
     if (
       !userId ||
       !showId ||
@@ -121,11 +121,7 @@ export const getBookingById = async (req, res) => {
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
     }
-    /*const bookingWithMovie = {
-      ...booking.toObject(),
-      movieName: booking.movieId?.title || 'Unknown Movie',
-      
-    };*/
+    
     res.status(200).json({data:booking,message:"sucessfully get booking by bookindId"});
   } catch (error) {
     console.error("Error fetching booking by ID:", error);

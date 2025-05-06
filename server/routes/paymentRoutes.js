@@ -1,12 +1,17 @@
 import express from 'express';
 const router = express.Router();
 import { authUser } from '../middlewares/authUser.js';
-const client_domain = process.env.CLIENT_DOMAIN;
+//const client_domain = process.env.CLIENT_DOMAIN
+const client_domain =
+  process.env.NODE_ENV === "production"
+    ? process.env.PROD_CLIENT_DOMAIN
+    : process.env.DEV_CLIENT_DOMAIN;
+
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 router.post('/create-checkout-session', authUser, async (req, res, next) => {
     try {
-        const { products } = req.body;
+        const { products ,bookingId } = req.body;
 
         // Map the products into line items for Stripe checkout session
         const lineItems = products.map((product) => ({
@@ -24,7 +29,8 @@ router.post('/create-checkout-session', authUser, async (req, res, next) => {
             payment_method_types: ["card"],
             line_items: lineItems,
             mode: "payment",
-            success_url: `${client_domain}/user/payment/success`,  
+            success_url: `${client_domain}/user/payment/success/${bookingId}?session_id={CHECKOUT_SESSION_ID}`,
+
             cancel_url: `${client_domain}/user/payment/cancel`,
             metadata: {
                 showId: products[0]?.showId,

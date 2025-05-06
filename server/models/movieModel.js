@@ -11,7 +11,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   genre: {
-    type: [String],  // Array of genres (e.g., ['Action', 'Comedy'])
+    type: [String],  
     required: true,
   },
   releaseDate: {
@@ -23,16 +23,16 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   duration: {
-    type: Number,  // Duration in minutes
+    type: Number,  
     required: true,
   },
   poster: {
-    type: String,  // URL of the movie poster image
+    type: String, 
     required: true,
     default: 'https://example.com/default-movie-poster.jpg'
   },
   rating: {
-    type: Number,  // Movie rating (e.g., 7.8 out of 10)
+    type: Number,  
     min: 1,
     max: 5,
   },

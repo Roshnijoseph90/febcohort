@@ -4,20 +4,19 @@ import mongoose from "mongoose";
 const reviewSchema= new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
+    ref: 'User', 
     required: true,
   },
   movieId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Movie', // Reference to the Movie model
-    required: true,
+    ref: 'Movie', 
   },
   
   rating: {
     type: Number,
     min: 1,
     max: 5,
-    required: true, // Rating is a number between 1 and 5
+    required: true, 
   },
   reviewText: {
     type: String,
@@ -27,7 +26,7 @@ const reviewSchema= new mongoose.Schema({
   },
   
 }, {
-  timestamps: true, // Automatically adds createdAt and updatedAt fields
+  timestamps: true, 
 });
 
 export const Review = mongoose.model('Review',reviewSchema);
