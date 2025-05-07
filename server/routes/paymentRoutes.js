@@ -11,6 +11,7 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 router.post('/create-checkout-session', authUser, async (req, res, next) => {
     try {
+        console.log(" Stripe Checkout Body:", req.body)
         const { products ,bookingId } = req.body;
 
         // Map the products into line items for Stripe checkout session
