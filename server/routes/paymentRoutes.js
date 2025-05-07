@@ -1,11 +1,11 @@
 import express from 'express';
 const router = express.Router();
 import { authUser } from '../middlewares/authUser.js';
-//const client_domain = process.env.CLIENT_DOMAIN
-const client_domain =
+const client_domain = process.env.CLIENT_DOMAIN
+/*const client_domain =
   process.env.NODE_ENV === "production"
     ? process.env.PROD_CLIENT_DOMAIN
-    : process.env.DEV_CLIENT_DOMAIN;
+    : process.env.DEV_CLIENT_DOMAIN;*/
 
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
