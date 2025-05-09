@@ -20,6 +20,8 @@ import Review from '../pages/user/Review'
 import AdminLayout from '../layout/AdminLayout';
 import AddMovies from '../pages/admin/AddMovies';
 import ForgotPassword from '../pages/user/ForgotPassword';
+import PaymentSuccess from '../pages/user/PaymentSuccess';
+import PaymentCancel from '../pages/user/PaymentCancel'
 export const router = createBrowserRouter([
   {
     path: "",
@@ -59,6 +61,14 @@ export const router = createBrowserRouter([
         path: "/showtimes/:movieId",
         element: <Showtimes />,
       },
+      {
+        path: "user/payment/success/:bookingId",
+          element:<PaymentSuccess />
+        },
+        {
+          path:"user/payment/cancel",
+          element:<PaymentCancel/>
+        },
       
       // Protecting Routes
       {
@@ -76,16 +86,10 @@ export const router = createBrowserRouter([
           {
             path:"payment/:bookingId",
             element:<Payment/>
-          },
-         
-         {
-          path: "payment/success/:bookingId",
-            element:<h1>payment success</h1>
-          },
-          {
-            path:"payment/cancel",
-            element:<h1>payment cancel</h1>
           }
+         
+         
+          
         ],
       },
       
