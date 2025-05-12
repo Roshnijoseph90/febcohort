@@ -6,7 +6,9 @@ const client_domain =
   process.env.NODE_ENV === "production"
     ? process.env.PROD_CLIENT_DOMAIN
     : process.env.DEV_CLIENT_DOMAIN;
-
+    console.log("Running in NODE_ENV:", process.env.NODE_ENV);
+    console.log("Using client domain:", client_domain);
+    
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 router.post('/create-checkout-session', authUser, async (req, res, next) => {
