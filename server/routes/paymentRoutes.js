@@ -25,14 +25,20 @@ router.post('/create-checkout-session', authUser, async (req, res, next) => {
             },
             quantity: 1,
         }));
+   
+        const successUrl = `${client_domain}/user/payment/success/${bookingId}?session_id={CHECKOUT_SESSION_ID}`;
+        const cancelUrl = `${client_domain}/user/payment/cancel`;
 
+        // Log the success URL
+        console.log("Stripe success_url is:", successUrl);
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
             line_items: lineItems,
             mode: "payment",
-            success_url: `${client_domain}/user/payment/success/${bookingId}?session_id={CHECKOUT_SESSION_ID}`,
-
-            cancel_url: `${client_domain}/user/payment/cancel`,
+            success_url: successUrl,
+  
+            cancel_url: cancelUrl,
+            //console.log("Stripe success_url is:", successUrl),
             metadata: {
                 showId: products[0]?.showId,
                 theaterId: products[0]?.theaterId,
