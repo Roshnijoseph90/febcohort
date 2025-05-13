@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'; // ✅ Add this import
 
 const Profile = () => {
   const [userProfile, isLoading, error] = useFetch("/user/profile");
-  const navigate = useNavigate(); // ✅ Initialize navigate
+  const navigate = useNavigate(); 
   const user = useSelector((state) => state.user.user);
 
   return (

@@ -12,9 +12,11 @@ const BookingSummary = () => {
   useEffect(() => {
     if (userId) {
       axiosInstance
-        .get(`/booking/user/${userId}`)
+        .get(`/booking/get-booking-byId/${userId}`)
         .then((res) => {
-          setBookings(res.data);
+          const bookingData = res.data?.data;
+          const bookingsArray = Array.isArray(bookingData) ? bookingData : [bookingData];
+          setBookings(bookingsArray);
           setLoading(false);
         })
         .catch((err) => {
@@ -38,12 +40,10 @@ const BookingSummary = () => {
         <ul className="space-y-6">
           {bookings.map((booking) => (
             <li key={booking._id} className="border p-4 rounded-lg shadow-md">
-              <p><strong>Movie:</strong> {booking.movieTitle}</p>
-              <p><strong>Theater:</strong> {booking.theaterName}</p>
-              <p><strong>Showtime:</strong> {booking.date} at {booking.timeSlot}</p>
-              <p><strong>Seats:</strong> {booking.selectedSeats?.join(', ')}</p>
-              <p><strong>Ticket Type:</strong> {booking.ticketType}</p>
-              <p><strong>Premium:</strong> {booking.isPremium ? 'Yes' : 'No'}</p>
+               <p><strong>Showtime:</strong> {new Date(booking.date).toDateString()} at {booking.timeSlot}</p>
+              <p><strong>Seats:</strong> {booking.selectedSeats.map(seat => seat.seatLabel).join(', ')}</p>
+               <p><strong>Seat Type:</strong> {booking.selectedSeats[0]?.seatType || 'N/A'}</p>
+              <p><strong>Status:</strong> {booking.status}</p>
               <p><strong>Total Paid:</strong> ₹{booking.totalAmount}</p>
             </li>
           ))}
