@@ -23,6 +23,7 @@ import ForgotPassword from '../pages/user/ForgotPassword';
 import PaymentSuccess from '../pages/user/PaymentSuccess';
 import PaymentCancel from '../pages/user/PaymentCancel'
 import BookingSummary from '../pages/user/BookingSummary';
+import  TicketPage  from '../pages/user/TicketPage'
 export const router = createBrowserRouter([
   {
     path: "",
@@ -49,6 +50,11 @@ export const router = createBrowserRouter([
         path: "/moviesDetails/:id/review",  
         element: <Review /> 
       },
+      {
+        path: "ticket/:id",  
+        element: <TicketPage />,
+      },
+      
       {
         path: "movies",
         element: <Movies />,  

@@ -2,7 +2,7 @@ import { Ticket } from '../models/ticketModel.js';
 import { Booking } from '../models/bookingModel.js';
 
 // Create a ticket for a booking
-export const createTicket = async (req, res) => {
+/*export const createTicket = async (req, res) => {
   try {
     const { bookingId, seatNumber, ticketType, price } = req.body;
     
@@ -25,7 +25,45 @@ export const createTicket = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Error creating ticket', error: err.message });
   }
+};*/
+export const createTicket = async (req, res) => {
+  try {
+    const ticketsInput = req.body;
+
+    // Check if it's an array or a single object
+    const ticketRequests = Array.isArray(ticketsInput) ? ticketsInput : [ticketsInput];
+
+    const createdTickets = [];
+
+    for (const ticketData of ticketRequests) {
+      const { bookingId, seatNumber, ticketType, price } = ticketData;
+
+      const booking = await Booking.findById(bookingId);
+      if (!booking) {
+        return res.status(404).json({ message: `Booking not found for ID: ${bookingId}` });
+      }
+
+      const ticket = new Ticket({
+        bookingId,
+        showId: booking.showId,
+        seatNumber,
+        ticketType,
+        price,
+      });
+
+      await ticket.save();
+      createdTickets.push(ticket);
+    }
+
+    res.status(201).json({
+      message: 'Tickets created successfully',
+      tickets: createdTickets,
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating ticket(s)', error: err.message });
+  }
 };
+
 
 // Get all tickets for a specific booking
 export const getTicketsByBooking = async (req, res) => {

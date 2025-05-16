@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { axiosInstance } from "../../config/axiosInstance";
 
 const PaymentSuccess = () => {
@@ -10,7 +10,7 @@ const PaymentSuccess = () => {
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null); // To store error messages
-
+const navigate = useNavigate();
   useEffect(() => {
     const fetchSessionStatus = async () => {
       if (!sessionId) {
@@ -26,6 +26,9 @@ const PaymentSuccess = () => {
         
         if (data?.status === "complete") {
           setPaymentStatus("complete");
+          setTimeout(() => {
+            navigate(`/ticket/${bookingId}`);
+          }, 2000); 
         } else {
           setPaymentStatus("open");
         }
@@ -49,6 +52,7 @@ const PaymentSuccess = () => {
         <>
           <h1>🎉 Payment Successful!</h1>
           <p>Thank you for your booking. Enjoy your movie! 🍿</p>
+          <p>Redirecting to your ticket... 🍿</p>
         </>
       ) : paymentStatus === "open" ? (
         <h1>🔄 Payment is still pending...</h1>
