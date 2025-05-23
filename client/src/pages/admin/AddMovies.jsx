@@ -62,7 +62,9 @@ const adminId = admin?.id||admin?._id;;
     
 
     // Add admin ID
-    formData.append("admin", "adminId");
+    formData.append("admin", adminId);
+    console.log("Admin ID being sent:", adminId);
+
 
     try {
       await axiosInstance.post("/movie/create-movie", formData, {

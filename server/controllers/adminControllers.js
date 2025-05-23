@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/token.js';
-import {Admin} from '../models/adminModel.js'
+import { Admin } from '../models/adminModel.js'; 
 import crypto from 'crypto'
 import mongoose from 'mongoose'; 
 const NODE_ENV = process.env.NODE_ENV;

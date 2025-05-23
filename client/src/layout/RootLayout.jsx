@@ -30,6 +30,7 @@ export const RootLayout = () => {
       setIsLoading(false)
     }
   };
+  
 
   useEffect(() => {
     checkUser();

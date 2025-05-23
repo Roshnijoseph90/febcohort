@@ -20,6 +20,7 @@ const bookingSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  qrCode: String,  
   selectedSeats: [
     {
       seatId: { type: String, required: true },

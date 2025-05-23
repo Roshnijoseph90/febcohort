@@ -1,5 +1,6 @@
 
 import express from 'express';
+import QRCode from 'qrcode';
 import  {Booking} from '../models/bookingModel.js';
 import { Show } from '../models/showsModel.js';
 import { User } from '../models/usersModel.js';
@@ -66,6 +67,9 @@ export const createBooking = async (req, res) => {
     // Calculate amount
     const { pricePerTicket, totalAmount } = calculateBookingAmount(seatType, isPremium, bookedSeatsCount);
 
+     // Generate QR code as data URL
+     const qrDataUrl = await QRCode.toDataURL(String(Date.now() + Math.random()));
+
     // Create the booking
     const booking = new Booking({
       userId,
@@ -78,6 +82,7 @@ export const createBooking = async (req, res) => {
       date,
       timeSlot,
       status: status || 'confirmed',
+      qrCode: qrDataUrl,
     });
 
     await booking.save();

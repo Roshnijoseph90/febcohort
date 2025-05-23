@@ -26,6 +26,8 @@ export const AdminLayout = () => {
       // If the user is authorized, save their data
       if (response.data.message === "user authorized") {
         dispatch(saveuser(response.data.data));  
+        console.log("CheckUser response:", response.data);
+
       } else {
         dispatch(clearuser());  // Clear user data if not authorized
       }

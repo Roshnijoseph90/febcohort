@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-//import { useSelector } from "react-redux";
-import {toast} from "react-hot-toast"
-import  {axiosInstance}  from "../../config/axiosInstance"
-const Review = () => {
-  const { id } = useParams(); // movieId from route
-  
-  const navigate = useNavigate();
+import { toast } from "react-hot-toast";
+import { axiosInstance } from "../../config/axiosInstance";
 
+const Review = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const token = document.cookie.split(";").find((cookie) => cookie.trim().startsWith("token="));
-  //const isUserAuth = token ? true : false; // If token
   const isUserAuth = !!token;
-  
+
   const [allReviews, setAllReviews] = useState([]);
   const [form, setForm] = useState({ rating: "", reviewText: "" });
 
-  // Fetch all reviews for the movie
   const fetchAllReviews = async () => {
     try {
       const res = await axiosInstance.get(`/review/get-movie-review/${id}`);
       setAllReviews(res.data.data || []);
     } catch (err) {
-      toast.error("Failed to fetch all reviews", err);
+      toast.error("Failed to fetch reviews");
     }
   };
 
@@ -43,7 +38,6 @@ const Review = () => {
         `/review/add-review`,
         {
           movieId: id,
-         
           rating: form.rating,
           reviewText: form.reviewText,
         },
@@ -54,89 +48,88 @@ const Review = () => {
         }
       );
       toast.success("Review submitted!");
-      setForm({ rating: "", reviewText: "" }); // Reset form
-      fetchAllReviews(); // Refresh list
+      setForm({ rating: "", reviewText: "" });
+      fetchAllReviews();
     } catch (err) {
       toast.error(err.response?.data?.message || "Review submission failed.");
     }
   };
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h2 style={{ marginBottom: "20px" }}>Write a Review</h2>
+    <div
+      className="position-relative w-100 min-vh-100"
+      style={{
+        backgroundColor: '#0D1B2A',
+        padding: '40px',
+        color: 'white',
+      }}
+    >
+      <div className="container bg-dark bg-opacity-75 p-4 rounded shadow-lg">
+        <h2 className="mb-4 text-warning">Write a Review</h2>
 
-      {/* Display form only if user is authenticated */}
-      {isUserAuth ? (
-        <form onSubmit={handleSubmit} style={{ marginBottom: "40px" }}>
-          <label>
-            Rating (1-5):
-            <input
-              type="number"
-              value={form.rating}
-              onChange={(e) => setForm({ ...form, rating: e.target.value })}
-              min="1"
-              max="5"
-              required
-              style={{ marginLeft: "10px", marginBottom: "10px" }}
-            />
-          </label>
-          <br />
-          <label>
-            Review:
-            <br />
-            <textarea
-              value={form.reviewText}
-              onChange={(e) =>
-                setForm({ ...form, reviewText: e.target.value })
-              }
-              rows={4}
-              cols={50}
-              required
-              style={{ marginTop: "5px" }}
-            />
-          </label>
-          <br />
-          <button type="submit" style={{ marginTop: "10px" }}>
-            Submit Review
-          </button>
-        </form>
-      ) : (
-        <p>Please log in to submit a review.</p>
-      )}
+        {isUserAuth ? (
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label text-white-50">Rating (1-5)</label>
+              <input
+                type="number"
+                min="1"
+                max="5"
+                value={form.rating}
+                onChange={(e) => setForm({ ...form, rating: e.target.value })}
+                className="form-control bg-dark text-white border-secondary"
+                required
+              />
+            </div>
 
-      <h3>All Reviews</h3>
-      {allReviews.length === 0 ? (
-        <p>No reviews yet for this movie.</p>
-      ) : (
-        allReviews.map((rev) => (
-          <div
-            key={rev._id}
-            style={{
-              borderBottom: "1px solid #ddd",
-              padding: "10px 0",
-              marginBottom: "10px",
-            }}
-          >
-            <p>
-              <strong>{rev.userId?.name || "Anonymous"}</strong>
-            </p>
-            <p>⭐ {rev.rating}</p>
-            <p>{rev.reviewText}</p>
-          </div>
-        ))
-      )}
+            <div className="mb-3">
+              <label className="form-label text-white-50">Review</label>
+              <textarea
+                rows="4"
+                value={form.reviewText}
+                onChange={(e) => setForm({ ...form, reviewText: e.target.value })}
+                className="form-control bg-dark text-white border-secondary"
+                required
+              />
+            </div>
 
-      <button
-      onClick={() => navigate(`/moviesDetails/${id}`)}
-        //onClick={() => navigate(`/moviesDetails/${id}/review`)}>
-        style={{ marginTop: "30px" }}
-      >
-        ← Back to Movie
-      </button>
+            <button type="submit" className="btn btn-warning w-100">
+              Submit Review
+            </button>
+          </form>
+        ) : (
+          <p className="text-warning">Please log in to submit a review.</p>
+        )}
+
+        <hr className="text-white my-5" />
+
+        <h3 className="text-warning">All Reviews</h3>
+        {allReviews.length === 0 ? (
+          <p className="text-white-50">No reviews yet for this movie.</p>
+        ) : (
+          allReviews.map((rev) => (
+            <div
+              key={rev._id}
+              className="border-bottom border-secondary py-3"
+            >
+              <p className="mb-1">
+                <strong className="text-warning">{rev.userId?.name || "Anonymous"}</strong>
+              </p>
+              <p className="mb-1">⭐ {rev.rating}</p>
+              <p className="text-white-50">{rev.reviewText}</p>
+            </div>
+          ))
+        )}
+
+        <button
+          onClick={() => navigate(`/moviesDetails/${id}`)}
+          className="btn btn-outline-light mt-4"
+        >
+          ← Back to Movie
+        </button>
+      </div>
     </div>
   );
 };
 
 export default Review;
-
-

@@ -1,65 +1,58 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Card } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router";
-import { axiosInstance } from "../../config/axiosInstance";
+import { useParams, useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
+import { Card, Button } from "react-bootstrap";
+import { axiosInstance } from "../../config/axiosInstance";
 
 const TicketPage = () => {
   const { id } = useParams();
-  const [bookingData, setBookingData] = useState(null);
-  const [tickets, setTickets] = useState([]);
-  const [movie, setMovie] = useState(null);
-  const [theater, setTheater] = useState(null);
-  const ticketRef = useRef(null);
   const navigate = useNavigate();
+  const ticketRef = useRef(null);
+
+  const [bookingData, setBookingData] = useState(null);
+  const [theaterName, setTheaterName] = useState("Theater Name");
+  const [tickets, setTickets] = useState([]);
+  const [movieTitle, setMovieTitle] = useState("Movie Title");
+  const [language, setLanguage] = useState("Language");
 
   useEffect(() => {
-    const fetchBookingAndTicket = async () => {
+    const fetchAll = async () => {
       try {
-        const bookingRes = await axiosInstance.get(`/booking/get-booking-by-bookingId/${id}`);
-        const booking = bookingRes.data.data;
+        const { data: { data: booking } } =
+          await axiosInstance.get(`/booking/get-booking-by-bookingId/${id}`);
         setBookingData(booking);
 
-        // Fetch movie details
-        if (booking?.show?.movieId) {
-          const movieRes = await axiosInstance.get(`/movie/${booking.show.movieId}`);
-          setMovie(movieRes.data.data);
+        if (booking.movieId) {
+          const { data: { data: movieData } } =
+            await axiosInstance.get(`/movie/moviesDetails/${booking.movieId}`);
+          
+          console.log("movieData →", movieData); // Optional debug
+          setMovieTitle(movieData?.title ?? "Movie Title");
+          setLanguage(movieData?.language ?? "Language");
         }
 
-        // Fetch theater details
-        if (booking?.show?.theaterId) {
-          const theaterRes = await axiosInstance.get(`/theater/${booking.show.theaterId}`);
-          setTheater(theaterRes.data.data);
-        }
-
-        // Fetch ticket data
-        const ticketRes = await axiosInstance.get(`/ticket/get-tickets/${id}`);
-        setTickets(ticketRes.data.data || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+        const { data: { data: ticketList = [] } } =
+          await axiosInstance.get(`/ticket/get-tickets/${id}`);
+        setTickets(ticketList);
+      } catch (err) {
+        console.error("Error fetching data:", err);
       }
     };
 
-    fetchBookingAndTicket();
+    fetchAll();
   }, [id]);
 
   const handleDownload = async () => {
     if (!ticketRef.current) return;
-
     try {
       const canvas = await html2canvas(ticketRef.current);
-      const image = canvas.toDataURL("image/png");
-
       const link = document.createElement("a");
-      link.href = image;
+      link.href = canvas.toDataURL("image/png");
       link.download = `ticket_${bookingData._id}.png`;
       link.click();
-
-      setTimeout(() => {
-        navigate("/movies");
-      }, 2000);
-    } catch (error) {
-      console.error("Error generating ticket image:", error);
+      setTimeout(() => navigate("/movies"), 2000);
+    } catch (err) {
+      console.error("Error generating ticket image:", err);
     }
   };
 
@@ -67,12 +60,11 @@ const TicketPage = () => {
     return <p className="text-white text-center">Loading...</p>;
   }
 
+  const qrCodeBase64 = bookingData.qrCode;
+
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-black">
-      <Card
-        className="p-3 rounded shadow-lg position-relative"
-        style={{ maxWidth: "700px", width: "100%" }}
-      >
+      <Card className="p-3 rounded shadow-lg position-relative" style={{ maxWidth: 600, width: "100%" }}>
         <Button
           variant="outline-secondary"
           size="sm"
@@ -82,77 +74,47 @@ const TicketPage = () => {
           Back to Home
         </Button>
 
-        <div
-          ref={ticketRef}
-          className="row g-3 align-items-center bg-white p-3 rounded"
-        >
-          {/* Movie Poster */}
-          <div className="col-12 col-md-5 text-center">
-            <img
-              src={movie?.poster || "/default-poster.jpg"}
-              alt="Movie Poster"
-              className="img-fluid rounded"
-              style={{
-                width: "100%",
-                maxHeight: "250px",
-                objectFit: "cover",
-              }}
-            />
+        <div ref={ticketRef} className="bg-white p-4 rounded">
+          {/* Movie Title & Info */}
+          <h5>{movieTitle}</h5>
+          <p className="text-muted">{language}</p>
+
+          {/* Date & Time */}
+          <p>
+            {new Date(bookingData.date).toLocaleDateString()} &nbsp;|&nbsp;
+            {bookingData.timeSlot}
+          </p>
+
+          {/* Theater */}
+          <p className="fw-bold">{theaterName}</p>
+
+          {/* Seats */}
+          <h6>🎟 {bookingData.selectedSeats.length} Tickets</h6>
+          <p>
+            {bookingData.selectedSeats.length > 0
+              ? bookingData.selectedSeats.map((s) => s.seatLabel).join(", ")
+              : "No seats selected"}
+          </p>
+
+          {/* QR Code */}
+          <div className="text-center my-3">
+            {qrCodeBase64 ? (
+              <img src={qrCodeBase64} alt="QR Code" style={{ maxWidth: 150 }} />
+            ) : (
+              <p className="text-muted">QR code not available</p>
+            )}
           </div>
 
-          {/* Ticket Details */}
-          <div className="col-12 col-md-7">
-            <h5>{movie?.title || "Movie Title"}</h5>
-            <p className="text-muted">{movie?.language || "Language"}</p>
+          {/* Booking ID */}
+          <p className="fw-bold">Booking ID: {bookingData._id}</p>
 
-            <p>
-              {bookingData?.show?.showTime
-                ? new Date(bookingData.show.showTime).toLocaleDateString()
-                : "Date not available"}{" "}
-              &nbsp; | &nbsp;
-              {bookingData?.show?.showTime
-                ? new Date(bookingData.show.showTime).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
-                : "Time not available"}
-            </p>
-
-            <p className="fw-bold">{theater?.name || "Theater Name"}</p>
-
-            <h6>🎟 {tickets.length} Tickets</h6>
-            <p>
-              {tickets.length > 0
-                ? `${tickets[0].ticketType} - ${tickets
-                    .map((ticket) => ticket.seatNumber)
-                    .join(", ")}`
-                : "No seats selected"}
-            </p>
-
-            {/* QR Code */}
-            <div className="text-center">
-              <img
-                src={`data:image/png;base64,${bookingData?.qrCode}`}
-                alt="QR Code"
-                className="qr-code"
-                style={{ maxWidth: "150px" }}
-              />
-            </div>
-
-            <p className="fw-bold">Booking ID: {bookingData._id}</p>
-            <p className="text-danger" style={{ fontSize: "12px" }}>
-              Cancellation unavailable: cut-off time of 5 hrs before showtime
-              has passed
-            </p>
-          </div>
+          {/* Cancellation Note */}
+          <p className="text-danger" style={{ fontSize: 12 }}>
+            Cancellation unavailable: cut-off time of 5 hrs before showtime has passed
+          </p>
         </div>
 
-        {/* Download Button */}
-        <Button
-          variant="primary"
-          className="w-100 mt-3"
-          onClick={handleDownload}
-        >
+        <Button variant="primary" className="w-100 mt-3" onClick={handleDownload}>
           Download Ticket
         </Button>
       </Card>
